@@ -5,14 +5,11 @@ import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Address from './address.js'
 
-const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
-  passwordColumnName: 'password',
-})
 
-export default class User extends compose(BaseModel, AuthFinder) {
+
+export default class Address extends BaseModel {
+    
   @column({ isPrimary: true })
   declare cpf: number
 
@@ -31,9 +28,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @belongsTo(() => Address, { foreignKey: 'address_id' })
-  declare address: BelongsTo<typeof Address>
 
 
-  static accessTokens = DbAccessTokensProvider.forModel(User)
 }

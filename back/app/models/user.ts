@@ -4,8 +4,10 @@ import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+
 import Address from './address.js'
+import Role from './role.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -31,8 +33,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @belongsTo(() => Address, { foreignKey: 'address_id' })
+  @belongsTo(() => Address, { foreignKey: 'address_id_fk' })
   declare address: BelongsTo<typeof Address>
+
+  @belongsTo(() => Role, { foreignKey: 'role_id_fk' })
+  declare role: BelongsTo<typeof Role>
 
 
   static accessTokens = DbAccessTokensProvider.forModel(User)

@@ -1,0 +1,40 @@
+export const permissions = [
+  {
+    listCliet: false,
+    viewClient: false,
+    createClient: false,
+    // editClient: false,
+    // deleteClient: false, 
+    listTransaction: false,
+    viewTransaction: false,
+    createTransaction: false,
+    addSaving: false,
+    addStock: false,
+  },
+  // MANAGER - 1
+  {
+    listCliet: true,
+    viewClient: false,
+    createClient: true,
+    // editClient: true,
+    // deleteClient: true, 
+    listTransaction: false,
+    viewTransaction: false,
+    createTransaction: true,
+    addSaving: false,
+    addStock: true,
+  },
+  // CLIENT - 2
+  {
+    listCliet: false,
+    viewClient: true,
+    createClient: false,
+    // editClient: true,
+    // deleteClient: true, 
+    listTransaction: true,
+    viewTransaction: true,
+    createTransaction: true,
+    addSaving: true,
+    addStock: false,
+  },
+]

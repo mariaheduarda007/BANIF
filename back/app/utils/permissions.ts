@@ -2,27 +2,24 @@ export const permissions = [
   {
     listCliet: false,
     viewClient: false,
-    createClient: false,
-    // editClient: false,
-    // deleteClient: false, 
+    createClient: false, 
     listTransaction: false,
     viewTransaction: false,
     createTransaction: false,
     addSaving: false,
     addStock: false,
+    addGovTitle: false,
   },
   // MANAGER - 1
   {
     listCliet: true,
     viewClient: false,
     createClient: true,
-    // editClient: true,
-    // deleteClient: true, 
     listTransaction: false,
-    viewTransaction: false,
     createTransaction: true,
     addSaving: false,
     addStock: true,
+    addGovTitle: true,
   },
   // CLIENT - 2
   {
@@ -32,9 +29,9 @@ export const permissions = [
     // editClient: true,
     // deleteClient: true, 
     listTransaction: true,
-    viewTransaction: true,
     createTransaction: true,
     addSaving: true,
     addStock: false,
+    addGovTitle: true,
   },
 ]

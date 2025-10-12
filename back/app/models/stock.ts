@@ -10,11 +10,11 @@ export default class Stock extends BaseModel {
   @column()
   declare value: number
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+//   @column.dateTime({ autoCreate: true })
+//   declare createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
+//   @column.dateTime({ autoCreate: true, autoUpdate: true })
+//   declare updatedAt: DateTime
 
 
    @belongsTo(() => User, { foreignKey: 'id_user_fk' })

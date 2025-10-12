@@ -11,8 +11,8 @@ export default class extends BaseSchema {
       table.dateTime('date', { useTz: true }).notNullable()
       table.boolean('type').notNullable()
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      // table.timestamp('created_at')
+      // table.timestamp('updated_at')
     })
   }
 

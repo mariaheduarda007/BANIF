@@ -20,10 +20,10 @@ export default class Address extends BaseModel {
   @column()
   declare state: string
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  // @column.dateTime({ autoCreate: true })
+  // declare createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  // @column.dateTime({ autoCreate: true, autoUpdate: true })
+  // declare updatedAt: DateTime | null
 
 }

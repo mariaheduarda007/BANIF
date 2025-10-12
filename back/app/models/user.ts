@@ -27,11 +27,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ serializeAs: null })
   declare password: string
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  @column()
+  declare role_id_fk: number
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  // @column.dateTime({ autoCreate: true })
+  // declare createdAt: DateTime
+
+  // @column.dateTime({ autoCreate: true, autoUpdate: true })
+  // declare updatedAt: DateTime | null
 
   @belongsTo(() => Address, { foreignKey: 'address_id_fk' })
   declare address: BelongsTo<typeof Address>

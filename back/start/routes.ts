@@ -33,11 +33,16 @@ router.get('/hello', async () => {
 
 // Rotas de autenticação (públicas)
 router.group(() => {
+  // públicas
   router.post('/register', '#controllers/auth_controller.register')
   router.post('/login', '#controllers/auth_controller.login')
-  // Rotas protegidas de autenticação
-  router.post('/logout', '#controllers/auth_controller.logout').use(middleware.auth())
-  router.get('/me', '#controllers/auth_controller.me').use(middleware.auth())
-  router.get('/tokens', '#controllers/auth_controller.tokens').use(middleware.auth())
-  router.post('/tokens', '#controllers/auth_controller.createToken').use(middleware.auth())
 }).prefix('/auth')
+
+// protegidas
+router.group(() => {
+  router.post('/logout', '#controllers/auth_controller.logout')
+  router.get('/me', '#controllers/auth_controller.me')
+  router.get('/tokens', '#controllers/auth_controller.tokens')
+  router.post('/tokens', '#controllers/auth_controller.createToken')
+}).prefix('/auth').use(middleware.auth())
+

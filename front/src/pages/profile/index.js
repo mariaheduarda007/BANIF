@@ -6,8 +6,8 @@ import NavigationBar from '../../components/navigationbar';
 import DataTable from '../../components/datatable';
 import { Client } from '../../api/client'
 import UserContext from '../../contexts/UserContext'
-import { getDataUser } from '../../service/UserService';
-import { getPermissions } from '../../service/PermissionService';
+// import { getDataUser } from '../../service/UserService';
+// import { getPermissions } from '../../service/PermissionService';
 
 
 export default function Home() {
@@ -23,10 +23,10 @@ export default function Home() {
         setLoad(true) 
         setTimeout(() => {
     
-            Client.get('disciplinas').then(res => {
-                // const disciplinas = res.data
-                // console.log(disciplinas)
-                // setData(disciplinas.data)
+            Client.get('profile').then(res => {
+                const userData = res.data
+                console.log(userData)
+                setData(disciplinas.data)
             })
             .catch(function(error) {
                 console.log(error)
@@ -43,7 +43,7 @@ export default function Home() {
         // Não Autenticado   
         if(!dataUser) navigate('/login')
         // Não Autorizado (rota anterior)
-        else if(permissions.listStatement === 0) navigate(-1)
+        else if(permissions.listDisciplina === 0) navigate(-1)
     }
 
     useEffect(() => {
@@ -53,27 +53,7 @@ export default function Home() {
 
     return (
         <>
-            <NavigationBar />
-            {
-                load 
-                ?
-                    <Container className="d-flex justify-content-center mt-5">
-                        <OrbitProgress variant="spokes" color="#32cd32" size="medium" text="" textColor="" />
-                    </Container>
-                :
-            
-                <Container className='mt-2'>
-                    {/* <DataTable 
-                        title="Extrato" 
-                        rows={['Data', 'Valor', 'Status', 'Ações']}
-                        hide={[true, false, true, false]}
-                        data={['maria', 'ange', 'joao']}
-                        keys={['data', 'valor', 'status']}
-                        resource='disciplinas'
-                        crud={['viewStatement']}
-                    /> */}
-                </Container>
-            }
+           
         </>
     )
 }

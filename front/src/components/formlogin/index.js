@@ -21,7 +21,7 @@ import {
   LinkForgot,
 } from "./style";
 
-import logo_depen from "../../images/logo_depen.png";
+import logo_bank from "../../images/logoBanco.png";
 
 export default function FormLogin() {
   const [email, setEmail] = useState("");
@@ -35,18 +35,13 @@ export default function FormLogin() {
     const user = { email: email, password: password };
     Client.post("/auth/login", user)
       .then((res) => {
-        const load = res.data.data;
+        const load = res.data;
 
         console.log("DATA: " + JSON.stringify(res));
-        const tokenValue = load.token;
-        alert(tokenValue)
-        if (!tokenValue) {
-          console.error("Token não encontrado na resposta!");
-          return;
-        }
+      
         setUser(load.user);
         setDataUser(load.user);
-        setToken(load.token);
+        setToken(load.token.value);
         setPermissions(load.permissions);
         navigate("/home");
       })
@@ -64,7 +59,7 @@ export default function FormLogin() {
       <BoxIcon>
         <div></div>
         <BoxItem>
-          <Icon src={logo_depen} />
+          <Icon src={logo_bank} />
         </BoxItem>
         <div></div>
       </BoxIcon>

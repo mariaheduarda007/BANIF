@@ -8,25 +8,26 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 import DropTitle from "../droptitle";
-import logo_depen from "../../images/ifpr_logo.jpeg";
+import logo_bank from '../../images/logoBanco.png';
+
 
 import UserContext from "../../contexts/UserContext";
 import { Client, removeToken } from "../../api/client";
 import { removePermissions } from "../../service/PermissionService";
-import { getDataUser, removeDataUser } from "../../service/UserService";
+// import { getDataUser, removeDataUser } from "../../service/UserService";
 
 function NavigationBar() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const dataUser = getDataUser();
+  // const dataUser = getDataUser();
 
   function logout() {
     setTimeout(() => {
       Client.post("auth/logout")
         .then((res) => {
           removeToken();
-          removePermissions();
-          removeDataUser();
+          // removePermissions();
+          // removeDataUser();
           navigate("/login");
         })
         .catch(function (error) {
@@ -53,7 +54,7 @@ function NavigationBar() {
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         <Navbar.Brand href="#">
-          <Image src={logo_depen} />
+          <Image src={logo_bank} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -107,7 +108,7 @@ function NavigationBar() {
           </Nav>
           <NavDropdown
             title={
-              <DropTitle text={dataUser ? dataUser.fullName : "Visitante"} />
+              <DropTitle text={"Visitante"} />
             }
             id="navbarScrollingDropdown"
             className="me-4"

@@ -17,46 +17,46 @@ import { getDataUser } from '../../service/UserService';
 export default function Create() {
 
     const [accountNumber, setAccountNumber] = useState('')
-    const [load, setLoad] = useState(true)
+    const [load, setLoad] = useState(false)
     const [data, setData] = useState([])
     const [value, setValue] = useState(0)
     const [course, setCourse] = useState(0)
     const navigate = useNavigate();
     // const { user } = useContext(UserContext);
-    const permissions = getPermissions()
-    const dataUser  = getDataUser()
+    // const permissions = getPermissions()
+    // const dataUser  = getDataUser()
     
-    function fetchData() {
+    // function fetchData() {
     
-        setLoad(true) 
-        setTimeout(() => {
+    //     setLoad(true) 
+    //     setTimeout(() => {
     
-            Client.get('disciplinas/create').then(res => {
-                const cursos = res.data
-                console.log(cursos)
-                setData(cursos.data)
-            })
-            .catch(function(error) {
-                console.log(error)
-            })
-            .finally( () => {
-                setLoad(false)
-            })
+    //         Client.get('disciplinas/create').then(res => {
+    //             const cursos = res.data
+    //             console.log(cursos)
+    //             setData(cursos.data)
+    //         })
+    //         .catch(function(error) {
+    //             console.log(error)
+    //         })
+    //         .finally( () => {
+    //             setLoad(false)
+    //         })
 
-        }, 1000)
-    }
+    //     }, 1000)
+    // }
 
-    function verifyPermission() {
-        // Não Autenticado   
-        if(!dataUser) navigate('/login')
-        // Não Autorizado (rota anterior)
-        else if(permissions.createDisciplina === 0) navigate(-1)
-    }
+    // function verifyPermission() {
+    //     // Não Autenticado   
+    //     if(!dataUser) navigate('/login')
+    //     // Não Autorizado (rota anterior)
+    //     else if(permissions.createDisciplina === 0) navigate(-1)
+    // }
 
-    useEffect(() => {
-        verifyPermission()
-        fetchData()
-    }, []);
+    // useEffect(() => {
+    //     verifyPermission()
+    //     fetchData()
+    // }, []);
 
     function sendData() {
 
@@ -69,7 +69,7 @@ export default function Create() {
             console.error(error);
         });
 
-        navigate('/disciplinas')
+        navigate('/home')
     }
 
     return (

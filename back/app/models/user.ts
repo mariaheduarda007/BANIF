@@ -16,10 +16,13 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 
 export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
-  declare cpf: number
+  declare id: number
 
   @column()
-  declare name: string | null
+  declare cpf: string
+
+  @column()
+  declare name: string
 
   @column()
   declare email: string
@@ -36,8 +39,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   // @column.dateTime({ autoCreate: true, autoUpdate: true })
   // declare updatedAt: DateTime | null
 
-  @belongsTo(() => Address, { foreignKey: 'address_id_fk' })
-  declare address: BelongsTo<typeof Address>
+  // @belongsTo(() => Address, { foreignKey: 'address_id_fk' })
+  // declare address: BelongsTo<typeof Address>
 
   @belongsTo(() => Role, { foreignKey: 'role_id_fk' })
   declare role: BelongsTo<typeof Role>

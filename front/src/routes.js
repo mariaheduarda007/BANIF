@@ -8,7 +8,7 @@ import Transfer from './pages/transaction'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/login" replace />,
+    element: <Login />,
   },
   {
     path: "/login",

@@ -1,6 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
+import {permissions} from '../utils/permissions.js'
+import logger from '@adonisjs/core/services/logger'
+
 export default class AuthController {
   /**
    * Registrar um novo usuário
@@ -37,19 +40,17 @@ export default class AuthController {
   /**
    * Fazer login do usuário
    */
-  async login({ request, response, auth }: HttpContext) {
+  async login({ request, response}: HttpContext) {
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       const user = await User.verifyCredentials(email, password)
-      // const token = await User.accessTokens.create(user, ['*'], {
-      //   name: 'Login Token',
-      //   expiresIn: '30 days',
-      // })
-
+      logger.info(user)
+      
       const token = await User.accessTokens.create(user, ['*'], {
         name: 'Login Token',
         expiresIn: '30 days',
       })
+      logger.info("token")
       return response.ok({
         message: 'Login realizado com sucesso',
         user: {
@@ -59,13 +60,16 @@ export default class AuthController {
         },
         token: {
           type: 'bearer',
-          value: token.value,
+          value: token.value!.release(),
           expiresAt: token.expiresAt,
         },
+        permissions:{...permissions[user.role_id_fk]}
       })
     } catch (error) {
+
       return response.unauthorized({
         message: 'Credenciais inválidas',
+        error: error
       })
     }
   }

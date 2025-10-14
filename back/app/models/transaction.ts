@@ -8,7 +8,7 @@ export default class Transaction extends BaseModel {
   declare id: number
 
   @column()
-  declare amount: string //?
+  declare value: string //?
 
   @column()
   declare date: DateTime
@@ -16,11 +16,8 @@ export default class Transaction extends BaseModel {
   @column()
   declare type: boolean
 
-  // @column.dateTime({ autoCreate: true })
-  // declare createdAt: DateTime
-
-  // @column.dateTime({ autoCreate: true, autoUpdate: true })
-  // declare updatedAt: DateTime
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
 
   @belongsTo(() => User, { foreignKey: 'id_user_fk' })
       declare user: BelongsTo<typeof User> 

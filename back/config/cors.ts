@@ -1,13 +1,13 @@
-import { CorsConfig } from '@ioc:Adonis/Core/Cors'
+import { defineConfig } from '@adonisjs/cors'
 
-const corsConfig: CorsConfig = {
+const corsConfig = defineConfig({
   enabled: true,
-  origin: ['http://localhost:8010'], // seu front
+  origin: ['http://localhost:8010'], // endereço do front-end
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   headers: true,
   exposeHeaders: [],
   credentials: true,
   maxAge: 90,
-}
+})
 
 export default corsConfig

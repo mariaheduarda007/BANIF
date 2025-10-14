@@ -19,7 +19,7 @@ export default class AuthController {
           cpf: user.cpf,
           name: user.name,
           email: user.email,
-        //   createdAt: user.createdAt,
+          createdAt: user.createdAt,
         },
         token: {
           type: 'bearer',
@@ -37,10 +37,15 @@ export default class AuthController {
   /**
    * Fazer login do usuário
    */
-  async login({ request, response }: HttpContext) {
+  async login({ request, response, auth }: HttpContext) {
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       const user = await User.verifyCredentials(email, password)
+      // const token = await User.accessTokens.create(user, ['*'], {
+      //   name: 'Login Token',
+      //   expiresIn: '30 days',
+      // })
+
       const token = await User.accessTokens.create(user, ['*'], {
         name: 'Login Token',
         expiresIn: '30 days',
@@ -54,7 +59,7 @@ export default class AuthController {
         },
         token: {
           type: 'bearer',
-          value: token.value!.release(),
+          value: token.value,
           expiresAt: token.expiresAt,
         },
       })
@@ -94,8 +99,8 @@ export default class AuthController {
           cpf: user.cpf,
           name: user.name,
           email: user.email,
-        //   createdAt: user.createdAt,
-        //   updatedAt: user.updatedAt,
+          //   createdAt: user.createdAt,
+          //   updatedAt: user.updatedAt,
         },
       })
     } catch (error) {
@@ -118,7 +123,7 @@ export default class AuthController {
           abilities: token.abilities,
           lastUsedAt: token.lastUsedAt,
           expiresAt: token.expiresAt,
-        //   createdAt: token.createdAt,
+          //   createdAt: token.createdAt,
         })),
       })
     } catch (error) {

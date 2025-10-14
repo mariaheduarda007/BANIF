@@ -7,27 +7,7 @@ router.get('/', async () => {
   }
 })
 
-router.group(() => {
-  router.resource('cursos', '#controllers/cursos_controller')
-}).use([middleware.auth()])
 
-router.group(() => {
-  router.resource('disciplinas', '#controllers/disciplinas_controller')
-}).use([middleware.auth()])
-
-router.group(() => {
-  router.resource('alunos', '#controllers/alunos_controller')
-}).use([middleware.auth()])
-
-// Matrículas
-router.group(() => {
-  router.get('matriculas', '#controllers/matriculas_controller.index')
-  router.get('matriculas/create', '#controllers/matriculas_controller.create')
-  router.post('matriculas', '#controllers/matriculas_controller.store')
-  router.delete('matriculas/:alunoId/:disciplinaId', '#controllers/matriculas_controller.destroy')
-}).use([middleware.auth()])
-
-// Rota pública boas-vindas / autenticação
 router.get('/hello', async () => {
   return {
     message: 'API AdonisJS com Autenticação por Access Tokens',

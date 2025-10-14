@@ -35,14 +35,18 @@ export default function FormLogin() {
     const user = { email: email, password: password };
     Client.post("/auth/login", user)
       .then((res) => {
-        const load = res.data;
-        console.log(load);
-        // Context
+        const load = res.data.data;
+
+        console.log("DATA: " + JSON.stringify(res));
+        const tokenValue = load.token;
+        alert(tokenValue)
+        if (!tokenValue) {
+          console.error("Token não encontrado na resposta!");
+          return;
+        }
         setUser(load.user);
-        // Local Storage
         setDataUser(load.user);
-        console.log(res.data);
-        setToken(load.token.value);
+        setToken(load.token);
         setPermissions(load.permissions);
         navigate("/home");
       })

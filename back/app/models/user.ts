@@ -30,8 +30,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare role_id_fk: number
 
-  // @column.dateTime({ autoCreate: true })
-  // declare createdAt: DateTime
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
 
   // @column.dateTime({ autoCreate: true, autoUpdate: true })
   // declare updatedAt: DateTime | null
@@ -41,7 +41,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @belongsTo(() => Role, { foreignKey: 'role_id_fk' })
   declare role: BelongsTo<typeof Role>
-
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 }

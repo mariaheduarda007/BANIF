@@ -9,11 +9,9 @@ export default class Saving extends BaseModel {
 
   @column()
   declare value: number
-  // @column.dateTime({ autoCreate: true })
-  // declare createdAt: DateTime
 
-  // @column.dateTime({ autoCreate: true, autoUpdate: true })
-  // declare updatedAt: DateTime
+  @column()
+  declare id_user_fk: number
 
   @belongsTo(() => User, { foreignKey: 'id_user_fk' })
   declare user: BelongsTo<typeof User>

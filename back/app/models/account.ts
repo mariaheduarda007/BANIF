@@ -14,11 +14,11 @@ export default class Account extends BaseModel {
   @column()
   declare balance: number
 
-  // @column.dateTime({ autoCreate: true })
-  // declare createdAt: DateTime
+  @column()
+  declare id_user_fk: number
 
-  // @column.dateTime({ autoCreate: true, autoUpdate: true })
-  // declare updatedAt: DateTime
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
 
   @belongsTo(() => User, { foreignKey: 'id_user_fk' })
   declare user: BelongsTo<typeof User> 

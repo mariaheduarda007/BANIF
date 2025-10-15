@@ -10,9 +10,9 @@ export default class extends BaseSchema {
       table.string('name').nullable()
       table.string('email', 254).notNullable().unique()
       table.string('password', 254).notNullable()
-      table.integer('role_id_fk').unsigned().defaultTo(2).references('id').inTable('roles')
+      table.integer('id_role_fk').unsigned().defaultTo(2).references('id').inTable('roles')
+      table.integer('id_address_fk').unsigned().references('id').inTable('address')
       table.timestamp('created_at').notNullable()
-      // table.timestamp('updated_at').nullable()
     })
   }
 

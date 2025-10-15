@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.integer('agency_number').notNullable()
       table.integer('account_number').notNullable()
       table.float('balance').notNullable().defaultTo(0)
-      // table.timestamp('created_at')
-      // table.timestamp('updated_at')
+      table.integer('id_user_fk').unsigned().references('id').inTable('users')
+      table.timestamp('created_at')
     })
   }
 

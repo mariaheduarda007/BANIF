@@ -31,18 +31,18 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare role_id_fk: number
+  declare id_role_fk: number
+
+  @column()
+  declare id_address_fk: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
-  // @column.dateTime({ autoCreate: true, autoUpdate: true })
-  // declare updatedAt: DateTime | null
+  @belongsTo(() => Address, { foreignKey: 'id_address_fk' })
+  declare address: BelongsTo<typeof Address>
 
-  // @belongsTo(() => Address, { foreignKey: 'address_id_fk' })
-  // declare address: BelongsTo<typeof Address>
-
-  @belongsTo(() => Role, { foreignKey: 'role_id_fk' })
+  @belongsTo(() => Role, { foreignKey: 'id_role_fk' })
   declare role: BelongsTo<typeof Role>
 
   static accessTokens = DbAccessTokensProvider.forModel(User)

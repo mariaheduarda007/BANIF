@@ -5,9 +5,7 @@ import {permissions} from '../utils/permissions.js'
 import logger from '@adonisjs/core/services/logger'
 
 export default class AuthController {
-  /**
-   * Registrar um novo usuário
-   */
+
   async register({ request, response }: HttpContext) {
     try {
       const payload = await request.validateUsing(registerValidator)
@@ -63,7 +61,7 @@ export default class AuthController {
           value: token.value!.release(),
           expiresAt: token.expiresAt,
         },
-        permissions:{...permissions[user.role_id_fk]}
+        permissions:{...permissions[user.id_role_fk]}
       })
     } catch (error) {
 

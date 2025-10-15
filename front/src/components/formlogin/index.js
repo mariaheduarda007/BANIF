@@ -35,10 +35,7 @@ export default function FormLogin() {
     const user = { email: email, password: password };
     Client.post("/auth/login", user)
       .then((res) => {
-        const load = res.data;
-
-        console.log("DATA: " + JSON.stringify(res));
-      
+        const load = res.data;      
         setUser(load.user);
         setDataUser(load.user);
         setToken(load.token.value);

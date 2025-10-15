@@ -4,14 +4,17 @@ import { Table, Button, Modal } from "react-bootstrap";
 import { Title } from "./style";
 import { VIEW, CREATE} from "../../utils/crud";
 import { getPermissions } from "../../service/PermissionService";
+import { getDataUser } from "../../service/UserService";
 
 export default function DataTable(props) {
   const navigate = useNavigate();
   const permissions = getPermissions();
 
+
   function view(item) {
     navigate("read", { state: { item: item } });
   }
+
 
   return (
     <>

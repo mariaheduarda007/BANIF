@@ -12,10 +12,10 @@ export const permissions = [
   },
   // MANAGER - 1
   {
-    listCliet: true,
+    listClient: false,
     viewClient: false,
     createClient: true,
-    listStatement: false,
+    listStatement: true,
     createStatement: true,
     addSaving: false,
     addStock: true,
@@ -23,7 +23,7 @@ export const permissions = [
   },
   // CLIENT - 2
   {
-    listCliet: false,
+    listClient: false,
     viewClient: true,
     createClient: false,
     // editClient: true,

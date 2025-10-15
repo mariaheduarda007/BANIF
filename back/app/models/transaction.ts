@@ -4,6 +4,8 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
 
 export default class Transaction extends BaseModel {
+  public static table = 'transaction' // força o nome singular, tive bastante erro com isso
+
   @column({ isPrimary: true })
   declare id: number
 

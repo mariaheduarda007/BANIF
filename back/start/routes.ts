@@ -7,7 +7,6 @@ router.get('/', async () => {
   }
 })
 
-
 router.get('/hello', async () => {
   return {
     message: 'API AdonisJS com Autenticação por Access Tokens',
@@ -19,30 +18,38 @@ router.get('/hello', async () => {
         logout: 'POST /auth/logout (protegida)',
         me: 'GET /auth/me (protegida)',
         tokens: 'GET /auth/tokens (protegida)',
-        createToken: 'POST /auth/tokens (protegida)'
+        createToken: 'POST /auth/tokens (protegida)',
       },
       protected: {
         profile: 'GET /profile (protegida)',
         dashboard: 'GET /dashboard (protegida)',
         posts: 'GET /posts (protegida)',
-        createPost: 'POST /posts (protegida)'
+        createPost: 'POST /posts (protegida)',
       },
     },
   }
 })
 
 // Rotas de autenticação (públicas)
-router.group(() => {
-  // públicas
-  router.post('/register', '#controllers/auth_controller.register')
-  router.post('/login', '#controllers/auth_controller.login')
-}).prefix('/auth')
+router
+  .group(() => {
+    // públicas
+    router.post('/register', '#controllers/auth_controller.register')
+    router.post('/login', '#controllers/auth_controller.login')
+    // start/routes.ts
+
+  })
+  .prefix('/auth')
 
 // protegidas
-router.group(() => {
-  router.post('/logout', '#controllers/auth_controller.logout')
-  router.get('/me', '#controllers/auth_controller.me')
-  router.get('/tokens', '#controllers/auth_controller.tokens')
-  router.post('/tokens', '#controllers/auth_controller.createToken')
-}).prefix('/auth').use(middleware.auth())
+router
+  .group(() => {
+    router.post('/logout', '#controllers/auth_controller.logout')
+    router.get('/me', '#controllers/auth_controller.me')
+    router.get('/tokens', '#controllers/auth_controller.tokens')
+    router.post('/tokens', '#controllers/auth_controller.createToken')
+    router.get('/transactions', '#controllers/transaction_controller.list')
 
+  })
+  .prefix('/auth')
+  .use(middleware.auth())

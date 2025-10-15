@@ -1,22 +1,23 @@
 import { BasePolicy } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import User from '#models/user'
-import { permissions } from '../utils/permissoes.js'
+import { permissions } from '../utils/permissions.js'
 
-export default class StatementPolicy extends BasePolicy {
+
+export default class TransactionPolicy extends BasePolicy {
   list(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso
     if (!user) return false
-    return permissions[user.papel_id].listStatement
+    return permissions[user.id_role_fk].listStatement
   }
   view(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso
     if (!user) return false
-    return permissions[user.papel_id].viewStatement
+    return permissions[user.id_role_fk].viewStatement
   }
   create(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso
     if (!user) return false
-    return permissions[user.papel_id].createStatement
+    return permissions[user.id_role_fk].createStatement
   }
 }

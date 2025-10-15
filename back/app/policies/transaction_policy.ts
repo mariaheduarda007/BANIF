@@ -13,7 +13,7 @@ export default class TransactionPolicy extends BasePolicy {
   view(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso
     if (!user) return false
-    return permissions[user.id_role_fk].viewStatement
+    return permissions[user.id_role_fk].listStatement
   }
   create(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso

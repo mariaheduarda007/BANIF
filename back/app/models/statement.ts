@@ -3,13 +3,13 @@ import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Account from './account.js'
 
-export default class Transaction extends BaseModel {
-  public static table = 'transaction' 
+export default class Statement extends BaseModel {
+  public static table = 'statement' 
 
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
+   @column()
   declare account_number_fk: number
 
   @column()
@@ -17,13 +17,14 @@ export default class Transaction extends BaseModel {
 
   @column()
   declare type: boolean
-  
+
   @column()
-  declare account_number_transfer: number
+  declare origin: string
+
   
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   
-  @belongsTo(() => Account, { foreignKey: 'account_number_fk' })
+  @belongsTo(() => Account, { foreignKey: 'account_number' })
       declare account: BelongsTo<typeof Account> 
 }

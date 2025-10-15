@@ -5,11 +5,12 @@ import User from './user.js'
 
 
 export default class Account extends BaseModel {
+   public static table = 'account'
   @column({ isPrimary: true })
-  declare accountNumber: number
+  declare account_number: string
   
   @column()
-  declare agencyNumber: number
+  declare agency_number: number
 
   @column()
   declare balance: number

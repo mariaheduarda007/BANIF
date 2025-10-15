@@ -1,37 +1,41 @@
+// create statement - ange
+
 export const permissions = [
   {
-    listCliet: false,
-    viewClient: false,
-    createClient: false, 
-    listStatement: false,
-    viewStatement: false,
-    createStatement: false,
-    addSaving: false,
-    addStock: false,
-    addGovTitle: false,
+    listClient: false,  // ange
+    viewClient: false, // ange
+    createClient: false, // ange
+    listStatement: false, // feito
+    createTransaction: false, // ange
+    createSavings: false,  // maria
+    getSavings: false, // maria
+    createInvestments: false, // maria
+    getInvestments: false, // maria
   },
   // MANAGER - 1
   {
-    listClient: false,
-    viewClient: false,
+    listClient: true,
+    viewClient:true,
     createClient: true,
     listStatement: true,
-    createStatement: true,
-    addSaving: false,
-    addStock: true,
-    addGovTitle: true,
+    createTransaction: false,
+    createSavings: false,
+    getSavings: false,
+    createInvestment: true,
+    getInvestments: false,
+
   },
   // CLIENT - 2
   {
     listClient: false,
     viewClient: true,
     createClient: false,
-    // editClient: true,
-    // deleteClient: true, 
     listStatement: true,
-    createStatement: true,
-    addSaving: true,
-    addStock: false,
-    addGovTitle: true,
+    createTransaction: true,
+    createSavings: true,
+    getSavings: true,
+    createInvestment: true,
+    getInvestments: true,
+
   },
 ]

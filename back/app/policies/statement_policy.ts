@@ -4,7 +4,7 @@ import User from '#models/user'
 import { permissions } from '../utils/permissions.js'
 
 
-export default class TransactionPolicy extends BasePolicy {
+export default class StatementPolicy extends BasePolicy {
   list(user: User | null): AuthorizerResponse {
     // Se não há usuário logado, negar acesso
     if (!user) return false

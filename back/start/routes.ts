@@ -48,8 +48,8 @@ router
     router.get('/me', '#controllers/auth_controller.me')
     router.get('/tokens', '#controllers/auth_controller.tokens')
     router.post('/tokens', '#controllers/auth_controller.createToken')
-    router.get('/transaction', '#controllers/transaction_controller.index')
-    router.get('/transaction', '#controllers/transaction_controller.store')
+    router.get('/statement', '#controllers/statement_controller.index')
+    router.get('/statement', '#controllers/statement_controller.store')
 
   })
   .prefix('/auth')

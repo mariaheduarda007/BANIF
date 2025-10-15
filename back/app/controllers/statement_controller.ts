@@ -1,21 +1,21 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import TransactionPolicy from '#policies/transaction_policy'
-import Transaction from '#models/transaction'
+import StatementPolicy from '#policies/statement_policy'
+import Statement from '#models/statement'
 
-export default class TransactionController {
+export default class StatementController {
   async index({ auth, response, bouncer }: HttpContext) {
     try {
       const user = auth.getUserOrFail()
 
-      if (await bouncer.with(TransactionPolicy).denies('list')) {
-        return response.forbidden({ message: 'Você não tem permissão para listar transações' })
+      if (await bouncer.with(StatementPolicy).denies('list')) {
+        return response.forbidden({ message: 'Você não tem permissão para listar extrato' })
       }
 
-      const transactions = await Transaction.query().where('id_user_fk', user.id)
+      const statement = await Statement.query().where('id_user_fk', user.id)
 
       return response.status(200).json({
         message: 'OK',
-        data: transactions.map((t) => ({
+        data: statement.map((t) => ({
           ...t.toJSON(),
           created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
         })),

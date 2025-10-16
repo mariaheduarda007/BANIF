@@ -18,7 +18,7 @@ export default function Home() {
   function fetchData() {
     setLoad(true);
     setTimeout(() => {
-      Client.get("/auth/transaction")
+      Client.get("/auth/statement")
         .then((res) => {
           const statement = res.data.data;
           console.log(JSON.stringify(statement));

@@ -21,7 +21,7 @@ export const permissions = [
     createTransaction: false,
     createSavings: false,
     getSavings: false,
-    createInvestment: true,
+    createInvestments: true,
     getInvestments: false,
 
   },
@@ -34,7 +34,7 @@ export const permissions = [
     createTransaction: true,
     createSavings: true,
     getSavings: true,
-    createInvestment: true,
+    createInvestments: true,
     getInvestments: true,
 
   },

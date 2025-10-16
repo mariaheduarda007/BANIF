@@ -92,7 +92,7 @@ function NavigationBar() {
               </svg>
               <span className="ms-1 fw-bolder">Transferência</span>
             </Nav.Link>
-            <Nav.Link onClick={() => navigate("/saving")}>
+            <Nav.Link onClick={() => navigate("/savings")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"

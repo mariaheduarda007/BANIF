@@ -7,11 +7,11 @@ import { permissions } from '../utils/permissions.js'
 export default class InvestmentsPolicy extends BasePolicy {
   create(user: User | null): AuthorizerResponse {
     if (!user) return false
-    return permissions[user.id_role_fk].createInvestments
+    return permissions[user.id_role_fk].createSavings
   }
   get(user: User | null): AuthorizerResponse {
     if (!user) return false
-    return permissions[user.id_role_fk].getInvestments
+    return permissions[user.id_role_fk].getSavings
   }
   
 }

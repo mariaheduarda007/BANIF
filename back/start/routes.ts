@@ -49,7 +49,9 @@ router
     router.get('/tokens', '#controllers/auth_controller.tokens')
     router.post('/tokens', '#controllers/auth_controller.createToken')
     router.get('/statement', '#controllers/statement_controller.index')
-    router.get('/statement', '#controllers/statement_controller.store')
+    router.post('/statement', '#controllers/statement_controller.store')
+    router.post('/savings', '#controllers/savings_controller.store')
+    router.get('/savings', '#controllers/savings_controller.get')
 
   })
   .prefix('/auth')

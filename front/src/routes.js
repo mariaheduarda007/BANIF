@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Error from "./pages/error";
 import Home from "./pages/home";
 import Transfer from './pages/transaction'
+import Savings from './pages/savings'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/transfer",
     element: <Transfer />,
+  },
+  {
+    path: "/savings",
+    element: <Savings />,
   },
 ]);
 

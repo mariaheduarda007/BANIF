@@ -52,6 +52,8 @@ router
     router.post('/statement', '#controllers/statement_controller.store')
     router.post('/savings', '#controllers/savings_controller.store')
     router.get('/savings', '#controllers/savings_controller.get')
+        router.post('/investments', '#controllers/investments_controller.store')
+    router.get('/investments', '#controllers/investments_controller.get')
 
   })
   .prefix('/auth')

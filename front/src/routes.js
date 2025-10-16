@@ -5,6 +5,7 @@ import Error from "./pages/error";
 import Home from "./pages/home";
 import Transfer from './pages/transaction'
 import Savings from './pages/savings'
+import Investments from './pages/investments'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/savings",
     element: <Savings />,
+  },
+  {
+    path: "/investments",
+    element: <Investments/>,
   },
 ]);
 

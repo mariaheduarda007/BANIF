@@ -8,8 +8,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 import DropTitle from "../droptitle";
-import logo_bank from '../../images/logoBanco.png';
-
+import logo_bank from "../../images/logoBanco.png";
 
 import UserContext from "../../contexts/UserContext";
 import { Client, removeToken } from "../../api/client";
@@ -105,11 +104,26 @@ function NavigationBar() {
               </svg>
               <span className="ms-1 fw-bolder">Poupança</span>
             </Nav.Link>
+            <Nav.Link onClick={() => navigate("/investments")}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="currentColor"
+                class="bi bi-graph-up-arrow"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"
+                />
+              </svg>
+
+              <span className="ms-1 fw-bolder">Investimento</span>
+            </Nav.Link>
           </Nav>
           <NavDropdown
-            title={
-              <DropTitle text={"Visitante"} />
-            }
+            title={<DropTitle text={"Visitante"} />}
             id="navbarScrollingDropdown"
             className="me-4"
           >

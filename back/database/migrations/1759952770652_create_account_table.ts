@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.string('account_number').primary()
-      table.integer('agency_number').notNullable()
+      table.string('agency_number').notNullable()
       table.float('balance').notNullable().defaultTo(0)
       table.integer('id_user_fk').unsigned().references('id').inTable('users')
       table.timestamp('created_at')

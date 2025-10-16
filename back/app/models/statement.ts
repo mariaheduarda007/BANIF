@@ -10,7 +10,7 @@ export default class Statement extends BaseModel {
   declare id: number
 
    @column()
-  declare account_number_fk: number
+  declare account_number_fk: string
 
   @column()
   declare value: number

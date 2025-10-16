@@ -10,7 +10,7 @@ export default class Account extends BaseModel {
   declare account_number: string
   
   @column()
-  declare agency_number: number
+  declare agency_number: string
 
   @column()
   declare balance: number

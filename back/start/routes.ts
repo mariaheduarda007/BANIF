@@ -30,7 +30,6 @@ router.get('/hello', async () => {
   }
 })
 
-// Rotas de autenticação (públicas)
 router
   .group(() => {
     // públicas
@@ -48,8 +47,8 @@ router
     router.get('/me', '#controllers/auth_controller.me')
     router.get('/tokens', '#controllers/auth_controller.tokens')
     router.post('/tokens', '#controllers/auth_controller.createToken')
-    router.get('/statement', '#controllers/statement_controller.index')
-    router.get('/statement', '#controllers/statement_controller.store')
+    // router.get('/statement', '#controllers/statement_controller.index')
+    // router.get('/statement', '#controllers/statement_controller.store')
 
   })
   .prefix('/auth')

@@ -10,13 +10,13 @@ export default class Account extends BaseModel {
   declare account_number: string
   
   @column()
-  declare agency_number: number
+  declare agency_number: string
 
   @column()
   declare balance: number
 
   @column()
-  declare id_user_fk: number
+  declare user_id_fk: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

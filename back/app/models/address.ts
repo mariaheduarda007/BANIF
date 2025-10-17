@@ -1,9 +1,14 @@
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from './user.js' 
 
 export default class Address extends BaseModel {
   public static table = 'address' // força o nome singular, tive bastante erro com isso
   @column({ isPrimary: true })
   declare id: number
+
+  @column()
+  declare user_id_fk: number
 
   @column()
   declare street: string 
@@ -12,7 +17,7 @@ export default class Address extends BaseModel {
   declare neighborhood: string
 
   @column()
-  declare number: number
+  declare house_number: number
 
   @column()
   declare city: string
@@ -20,4 +25,7 @@ export default class Address extends BaseModel {
   @column()
   declare state: string
 
+  @belongsTo(() => User, { foreignKey: 'user_id' })
+  declare user: BelongsTo<typeof User>
+  
 }

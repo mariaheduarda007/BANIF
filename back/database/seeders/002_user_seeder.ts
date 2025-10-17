@@ -10,7 +10,6 @@ export default class extends BaseSeeder {
         email: 'claudio@example.com',
         password:  '12345678', 
         id_role_fk: 1,
-        id_address_fk: 1
       },
       {
         cpf: '98765432100',
@@ -18,8 +17,6 @@ export default class extends BaseSeeder {
         email: 'xeila@example.com',
         password:  '12345678', 
         id_role_fk: 2,
-        id_address_fk: 2
-
       },
     ])
   }

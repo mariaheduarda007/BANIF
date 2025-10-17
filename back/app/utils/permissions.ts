@@ -4,7 +4,7 @@ export const permissions = [
   {
     listClient: false,  // ange
     viewClient: false, // ange
-    createClient: false, // ange
+    createClient: false, // ange 
     listStatement: false, // feito
     createTransaction: false, // ange
     createSavings: false,  // maria

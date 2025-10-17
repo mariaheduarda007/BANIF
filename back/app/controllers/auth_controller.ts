@@ -1,15 +1,38 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
-import {permissions} from '../utils/permissions.js'
+import { permissions } from '../utils/permissions.js'
 import logger from '@adonisjs/core/services/logger'
+import Address from '#models/address'
+import Account from '#models/account'
 
 export default class AuthController {
-
   async register({ request, response }: HttpContext) {
     try {
       const payload = await request.validateUsing(registerValidator)
-      const user = await User.create(payload)
+      const user = await User.create({
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        cpf: payload.cpf,
+      })
+
+      await Address.create({
+      street: payload.address.street,
+      neighborhood: payload.address.neighborhood,
+      house_number: payload.address.house_number,
+      city: payload.address.city,
+      state: payload.address.state,
+      user_id_fk: user.id, 
+    })
+
+      await Account.create({
+        account_number: payload.account.account_number,
+        agency_number: payload.account.agency_number,
+        balance: 0,
+        user_id_fk: user.id,
+      })
+
       const token = await User.accessTokens.create(user, ['*'], {
         name: 'Registration Token',
         expiresIn: '30 days',
@@ -38,17 +61,17 @@ export default class AuthController {
   /**
    * Fazer login do usuário
    */
-  async login({ request, response}: HttpContext) {
+  async login({ request, response }: HttpContext) {
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       const user = await User.verifyCredentials(email, password)
       logger.info(user)
-      
+
       const token = await User.accessTokens.create(user, ['*'], {
         name: 'Login Token',
         expiresIn: '30 days',
       })
-      logger.info("token")
+      logger.info('token')
       return response.ok({
         message: 'Login realizado com sucesso',
         user: {
@@ -61,13 +84,12 @@ export default class AuthController {
           value: token.value!.release(),
           expiresAt: token.expiresAt,
         },
-        permissions:{...permissions[user.id_role_fk]}
+        permissions: { ...permissions[user.id_role_fk] },
       })
     } catch (error) {
-
       return response.unauthorized({
         message: 'Credenciais inválidas',
-        error: error
+        error: error,
       })
     }
   }

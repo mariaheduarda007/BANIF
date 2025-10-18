@@ -35,14 +35,16 @@ router
     // públicas
     router.post('/register', '#controllers/auth_controller.register')
     router.post('/login', '#controllers/auth_controller.login')
+    router.get('/listClients', '#controllers/clients_controller.index')
     // start/routes.ts
-
+    
   })
   .prefix('/auth')
-
-// protegidas
-router
+  
+  // protegidas
+  router
   .group(() => {
+    router.get('/viewAccount', '#controllers/clients_controller.viewAccount')
     router.post('/logout', '#controllers/auth_controller.logout')
     router.get('/me', '#controllers/auth_controller.me')
     router.get('/tokens', '#controllers/auth_controller.tokens')

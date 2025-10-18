@@ -1,12 +1,15 @@
-// create statement - ange
 
+//* organizar a acessibilidade a tela depois
 export const permissions = [
   {
-    listClient: false,  // ange
-    viewClient: false, // ange
-    createClient: false, // ange 
-    listStatement: false, // feito
+    listClient: false,  // ange feito
+    viewClient: false, // ange 
+    createClient: false, // ange feito
     createTransaction: false, // ange
+    createStatement: false, // - ange 
+
+
+    listStatement: false, // feito
     createSavings: false,  // maria
     getSavings: false, // maria
     createInvestments: false, // maria

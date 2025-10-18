@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { OrbitProgress } from "react-loading-indicators";
 import UserContext from "../../contexts/UserContext";
 import { Client, setToken } from "../../api/client";
@@ -9,39 +9,34 @@ import { Container, Title } from "./style";
 export default function Balance() {
   const [load, setLoad] = useState(false);
   const [view, setView] = useState(false);
-  const [data, setData] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [accountNumber, setAccountNumber] = useState("");
+  const [agencyNumber, setAgencyNumber] = useState("");
 
-  Client.get("/auth/viewAccount")
-    .then((res) => {
-      const accountData = res.data.data;
-      setData(accountData.balance);
-    })
-    .catch(function (error) {
-      setView(true);
-      console.log(error);
-    })
-    .finally(() => {
-      setLoad(false);
-    });
+  useEffect(() => {
+    Client.get("/auth/viewAccount")
+      .then((res) => {
+        const accountData = res.data.data;
+        setBalance(Number(accountData.balance));
+        setAccountNumber(accountData.accountNumber);
+        setAgencyNumber(accountData.agencyNumber);
+      })
+      .catch((error) => {
+        setView(true);
+        console.log(error);
+      })
+      .finally(() => setLoad(false));
+  }, []);
 
   return (
     <Container>
       <Title>Saldo disponível</Title>
-      {load ? (
-        <Container className="d-flex justify-content-center mt-5">
-          <OrbitProgress
-            variant="spokes"
-            color="#32cd32"
-            size="medium"
-            text=""
-            textColor=""
-          />
-        </Container>
-      ) : (
         <Container className="mt-2">
-          <p>{data}</p>
+          <h1>R$ {balance.toFixed(2)}</h1>
+          <br></br>
+          <h2>Ag. {agencyNumber}</h2>
+          <h2>Cc. {accountNumber}</h2>
         </Container>
-      )}
     </Container>
   );
 }

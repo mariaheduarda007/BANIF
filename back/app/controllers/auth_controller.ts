@@ -123,7 +123,7 @@ export default class AuthController {
           cpf: user.cpf,
           name: user.name,
           email: user.email,
-          //   createdAt: user.createdAt,
+          createdAt: user.createdAt,
           //   updatedAt: user.updatedAt,
         },
       })

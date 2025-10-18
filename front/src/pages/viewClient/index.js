@@ -7,9 +7,9 @@ import { Client } from "../../api/client";
 import { getDataUser } from "../../service/UserService";
 import { getPermissions } from "../../service/PermissionService";
 import Balance from "../../components/clientBalance";
+import Data from "../../components/clientData";
 
 export default function ViewClient() {
-  const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
   const dataUser = getDataUser();
@@ -39,10 +39,16 @@ export default function ViewClient() {
         </Container>
       ) : (
         <Container className="mt-2">
-            <Balance />
+          <div className="row">
+            <div className="col-md-6">
+              <Balance />
+            </div>
+            <div className="col-md-6">
+              <Data />
+            </div>
+          </div>
         </Container>
       )}
     </>
   );
 }
- 

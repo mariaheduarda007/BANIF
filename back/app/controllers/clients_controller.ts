@@ -37,22 +37,42 @@ export default class ClientsController {
       })
     }
   }
-  async viewAccount({ auth, response, bouncer }: HttpContext) {
+  async viewAccount({ auth, response, bouncer, params }: HttpContext) {
     try {
-      const user = await auth.getUserOrFail()
+      const loggedUser = await auth.getUserOrFail()
 
-      if (await bouncer.with(ClientPolicy).denies('view')) {
-        return response.forbidden({ message: 'Você não tem permissão para ver dados da conta' })
+      // if (await bouncer.with(ClientPolicy).denies('view')) {
+      //   return response.forbidden({ message: 'Você não tem permissão para ver dados da conta' })
+      // }
+
+      // se for gerente e um id for passado, ele pode ver outro cliente
+      if (loggedUser.id_role_fk === 1 && params.id) {
+        const client = await User.find(params.id)
+
+        if (!client) {
+          return response.notFound({
+            message: 'Cliente não encontrado.',
+          })
+        }
+
+        await client.load('account')
+
+        return response.ok({
+          message: 'OK',
+          data: {
+            accountNumber: client.account?.account_number,
+            agencyNumber: client.account?.agency_number,
+            balance: client.account?.balance,
+          },
+        })
       }
-
-      await user.load('account')
-
+      await loggedUser.load('account')
       return response.ok({
         message: 'OK',
         data: {
-          accountNumber: user.account?.account_number,
-          agencyNumber: user.account?.agency_number,
-          balance: user.account?.balance,
+          accountNumber: loggedUser.account?.account_number,
+          agencyNumber: loggedUser.account?.agency_number,
+          balance: loggedUser.account?.balance,
         },
       })
     } catch (error) {
@@ -63,5 +83,4 @@ export default class ClientsController {
       })
     }
   }
-  
 }

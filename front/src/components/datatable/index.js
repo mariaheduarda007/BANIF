@@ -12,6 +12,7 @@ export default function DataTable(props) {
 
   function viewClient(item) {
     navigate("/viewClient", { state: { client: item } });
+    
   }
 
   return (

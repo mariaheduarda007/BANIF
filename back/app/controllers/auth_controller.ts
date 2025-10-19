@@ -115,18 +115,43 @@ export default class AuthController {
   /**
    * Obter informações do usuário autenticado
    */
-  async me({ auth, response }: HttpContext) {
+  async me({ auth, params, response }: HttpContext) {
     try {
-      const user = auth.getUserOrFail()
+      const loggedUser = await auth.getUserOrFail()
+
+      // se for gerente e um id for passado, ele pode ver outro cliente
+      if (loggedUser.id_role_fk === 1 && params.id) {
+        const client = await User.find(params.id)
+        console.log(client)
+
+        if (!client) {
+          return response.notFound({
+            message: 'Cliente não encontrado.',
+          })
+        }
+
+        return response.ok({
+          user: {
+            id: client.id,
+            cpf: client.cpf,
+            name: client.name,
+            email: client.email,
+            createdAt: client.createdAt,
+          },
+          message: 'Dados do cliente acessados pelo gerente.',
+        })
+      }
+
+      // se nao retorna o próprio usuário (cliente comum)
       return response.ok({
         user: {
-          id: user.id,
-          cpf: user.cpf,
-          name: user.name,
-          email: user.email,
-          createdAt: user.createdAt,
-          //   updatedAt: user.updatedAt,
+          id: loggedUser.id,
+          cpf: loggedUser.cpf,
+          name: loggedUser.name,
+          email: loggedUser.email,
+          createdAt: loggedUser.createdAt,
         },
+        message: 'Dados do usuário autenticado.',
       })
     } catch (error) {
       return response.unauthorized({
@@ -134,6 +159,7 @@ export default class AuthController {
       })
     }
   }
+
   async getUserAddress({ params, response, bouncer }: HttpContext) {
     //   const user = await auth.getUserOrFail()
 

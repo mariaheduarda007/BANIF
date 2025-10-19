@@ -65,10 +65,10 @@ export default function ListClients() {
         <Container className="mt-2">
           <DataTable
             title="Clientes Cadastrados"
-            rows={["Nome", "CPF", "Email", "Número da Conta"]}
-            hide={[true, false, true, false]}
+            rows={["Nome", "CPF", "Email", "Número da Conta", "Id"]}
+            hide={[true, false, true, false, true]}
             data={data}
-            keys={["name", "cpf", "email", "accountNumber"]}
+            keys={["name", "cpf", "email", "accountNumber", "id"]}
             resource="clients"
             crud={["listClients"]}
           />

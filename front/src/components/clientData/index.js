@@ -7,7 +7,7 @@ import { setDataUser } from "../../service/UserService";
 import { Container, Title } from "./style";
 
 export default function Data() {
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState(true);
   const [view, setView] = useState(false);
   const [data, setData] = useState("");
   const [name, setName] = useState("");
@@ -24,6 +24,7 @@ export default function Data() {
     Client.get("/auth/me")
       .then((res) => {
         const clientData = res.data.user;
+        console.log(res.data.message)
         setName(clientData.name);
         setCpf(clientData.cpf);
         setEmail(clientData.email);

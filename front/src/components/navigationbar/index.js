@@ -14,12 +14,12 @@ import logo_bank from '../../images/logoBanco.png';
 import UserContext from "../../contexts/UserContext";
 import { Client, removeToken } from "../../api/client";
 import { removePermissions } from "../../service/PermissionService";
-// import { getDataUser, removeDataUser } from "../../service/UserService";
+import { getDataUser, removeDataUser } from "../../service/UserService";
 
 function NavigationBar() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  // const dataUser = getDataUser();
+  const dataUser = getDataUser();
 
   function logout() {
     setTimeout(() => {
@@ -108,7 +108,7 @@ function NavigationBar() {
           </Nav>
           <NavDropdown
             title={
-              <DropTitle text={"Visitante"} />
+              <DropTitle text={dataUser.name} />
             }
             id="navbarScrollingDropdown"
             className="me-4"

@@ -8,7 +8,7 @@ export default class extends BaseSeeder {
         account_number: '12345678900',
         agency_number: '134465',
         balance: 100,
-        id_user_fk: 1,        
+        id_user_fk: 2,        
       },
       
     ])

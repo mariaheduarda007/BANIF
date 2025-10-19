@@ -11,6 +11,13 @@ export default class extends BaseSeeder {
         origin: "Investimento",
         account_number_fk:'12345678900'
       },
+      {
+        id: 2,
+        value: 20,
+        type: true,
+        origin: "Investimento",
+        account_number_fk:'12345678900'
+      },
       
     ])
   }

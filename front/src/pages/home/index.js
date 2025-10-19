@@ -9,6 +9,7 @@ import { getDataUser } from "../../service/UserService";
 import { getPermissions } from "../../service/PermissionService";
 
 export default function Home() {
+
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
@@ -16,8 +17,10 @@ export default function Home() {
   const permissions = getPermissions();
 
   function fetchData() {
+    console.log("oi")
     setLoad(true);
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       Client.get("/auth/statement")
         .then((res) => {
           const statement = res.data.data;
@@ -60,10 +63,10 @@ export default function Home() {
         <Container className="mt-2">
           <DataTable
             title="Extrato"
-            rows={["Data", "Valor", "Status", "Ações"]}
+            rows={["Data", "Valor", "Origem", "Ações"]}
             hide={[true, false, true, false]}
             data={data}
-            keys={["created_at", "value", "type"]}
+            keys={["created_at", "value", "origin"]}
             resource="disciplinas"
             crud={["listStatement"]}
           />

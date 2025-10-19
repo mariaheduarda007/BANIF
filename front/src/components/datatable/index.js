@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { Table, Button, Modal } from "react-bootstrap";
 import { Title } from "./style";
-import { VIEW, CREATE} from "../../utils/crud";
+import { VIEW, CREATE } from "../../utils/crud";
 import { getPermissions } from "../../service/PermissionService";
 import { getDataUser } from "../../service/UserService";
 
@@ -10,11 +10,9 @@ export default function DataTable(props) {
   const navigate = useNavigate();
   const permissions = getPermissions();
 
-
   function view(item) {
     navigate("read", { state: { item: item } });
   }
-
 
   return (
     <>
@@ -38,15 +36,28 @@ export default function DataTable(props) {
           <tbody>
             {props.data.map((element, index) => (
               <tr key={index}>
-                {props.keys.map((key, index) =>
-                  props.hide[index] ? (
-                    <td className="d-none d-md-table-cell" key={index}>
-                      {element[key]}
+                {props.keys.map((key, index) => {
+                  const hidden = props.hide[index];
+                  const isValue = props.keys[index] === "value";
+                  const aux = element.type;
+
+                  return (
+                    <td
+                      key={index}
+                      className={`${hidden ? "d-none d-md-table-cell" : ""} ${
+                        isValue
+                          ? element.type
+                            ? "text-success"
+                            : "text-danger"
+                          : ""
+                      }`}
+                    >
+                      {isValue
+                        ? `${element.type ? "+ " : "- "}${element[key]}`
+                        : element[key]}
                     </td>
-                  ) : (
-                    <td key={index}>{element[key]}</td>
-                  )
-                )}
+                  );
+                })}
 
                 <td>
                   {permissions[props.crud[VIEW]] ? (

@@ -4,35 +4,41 @@ import Statement from '#models/statement'
 import Account from '#models/account'
 
 export default class StatementController {
+  async index({ auth, response, bouncer }: HttpContext) {
+    try {
+      const user = auth.getUserOrFail()
 
-    async index({ auth, response, bouncer }: HttpContext) {
-        try {
-            const user = auth.getUserOrFail()
+      if (await bouncer.with(StatementPolicy).denies('list')) {
+        return response.forbidden({ message: 'Você não tem permissão para listar extrato' })
+      }
 
-            if (await bouncer.with(StatementPolicy).denies('list')) {
-                return response.forbidden({ message: 'Você não tem permissão para listar extrato' })
-            }
+      const account = await Account.query().where('id_user_fk', user.id)
+      
+      if (!account || account.length === 0) {
+          console.log(user.id)
+        return response.status(404).json({ message: 'Conta não encontrada' })
+      }
 
-            const account = await Account.query().where('id_user_fk', user.id)
-            account.
+      const account_number = account[0].account_number
 
-           // const statement = await Statement.query().where('account_number_fk', )
+      const statement = await Statement.query().where('account_number_fk', account_number)
 
-            return response.status(200).json({
-                /* message: 'OK',
-                data: statement.map((t) => ({
-                    ...t.toJSON(),
-                    created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
-                })), */
-            })
-        } catch (error) {
-            return response.status(500).json({
-                message: 'ERROR',
-            })
-        }
+      return response.status(200).json({
+        message: 'OK',
+        data: statement.map((t) => ({
+          ...t.toJSON(),
+          created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
+        })),
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'ERROR',
+        details: error.message,
+      })
     }
+  }
 
-    /* async store({ request, response, auth, bouncer }: HttpContext) {
+  /* async store({ request, response, auth, bouncer }: HttpContext) {
         // const payload = await request.validateUsing(createAluno)
         try {
             // Usuário Autenticado

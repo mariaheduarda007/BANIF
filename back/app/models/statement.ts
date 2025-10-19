@@ -25,6 +25,6 @@ export default class Statement extends BaseModel {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   
-  @belongsTo(() => Account, { foreignKey: 'account_number' })
+  @belongsTo(() => Account, { foreignKey: 'account_number_fk' })
       declare account: BelongsTo<typeof Account> 
 }

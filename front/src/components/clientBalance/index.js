@@ -29,14 +29,14 @@ export default function Balance() {
   }, []);
 
   return (
-    <Container>
-      <Title>Saldo disponível</Title>
-        <Container className="mt-2">
-          <h1>R$ {balance.toFixed(2)}</h1>
-          <br></br>
-          <h2>Ag. {agencyNumber}</h2>
-          <h2>Cc. {accountNumber}</h2>
-        </Container>
-    </Container>
+    <div>
+      <Container className="mt-2">
+        <Title>Saldo disponível</Title>
+        <h1>R$ {balance.toFixed(2)}</h1>
+        <br></br>
+        <h2>Ag. {agencyNumber}</h2>
+        <h2>Cc. {accountNumber}</h2>
+      </Container>
+    </div>
   );
 }

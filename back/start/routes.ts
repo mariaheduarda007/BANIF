@@ -47,6 +47,7 @@ router
     router.get('/viewAccount', '#controllers/clients_controller.viewAccount')
     router.post('/logout', '#controllers/auth_controller.logout')
     router.get('/me', '#controllers/auth_controller.me')
+    router.get('/users/:id/address', '#controllers/auth_controller.getUserAddress')
     router.get('/tokens', '#controllers/auth_controller.tokens')
     router.post('/tokens', '#controllers/auth_controller.createToken')
     // router.get('/statement', '#controllers/statement_controller.index')

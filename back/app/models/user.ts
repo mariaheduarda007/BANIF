@@ -7,6 +7,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
 import Role from './role.js'
 import Account from './account.js'
+import Address from './address.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -34,9 +35,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
-  
-  @hasOne(() => Account, {foreignKey: 'user_id_fk'})
+
+
+  @hasOne(() => Account, { foreignKey: 'user_id_fk' })
   declare account: HasOne<typeof Account>
+
+  @hasOne(() => Address, { foreignKey: 'user_id_fk' })
+  public address!: HasOne<typeof Address>
 
   @belongsTo(() => Role, { foreignKey: 'id_role_fk' })
   declare role: BelongsTo<typeof Role>

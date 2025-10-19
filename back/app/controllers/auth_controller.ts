@@ -18,13 +18,13 @@ export default class AuthController {
       })
 
       await Address.create({
-      street: payload.address.street,
-      neighborhood: payload.address.neighborhood,
-      house_number: payload.address.house_number,
-      city: payload.address.city,
-      state: payload.address.state,
-      user_id_fk: user.id, 
-    })
+        street: payload.address.street,
+        neighborhood: payload.address.neighborhood,
+        house_number: payload.address.house_number,
+        city: payload.address.city,
+        state: payload.address.state,
+        user_id_fk: user.id,
+      })
 
       await Account.create({
         account_number: payload.account.account_number,
@@ -120,6 +120,7 @@ export default class AuthController {
       const user = auth.getUserOrFail()
       return response.ok({
         user: {
+          id: user.id,
           cpf: user.cpf,
           name: user.name,
           email: user.email,
@@ -133,27 +134,31 @@ export default class AuthController {
       })
     }
   }
-  /**
-   * Listar todos os tokens do usuário autenticado
-   */
-  async tokens({ auth, response }: HttpContext) {
+  async getUserAddress({ params, response, bouncer }: HttpContext) {
+    //   const user = await auth.getUserOrFail()
+
+    //   if (await bouncer.with(ClientPolicy).denies('list')) {
+    //     return response.forbidden({ message: 'Você não tem permissão para listar clientes' })
+    //   }
     try {
-      const user = auth.getUserOrFail()
-      const tokens = await User.accessTokens.all(user)
+      const address = await Address.query().where('user_id_fk', params.id).first()
+
+      if (!address) {
+        return response.status(404).json({ message: 'Endereço não encontrado' })
+      }
+
       return response.ok({
-        tokens: tokens.map((token) => ({
-          name: token.name,
-          type: token.type,
-          abilities: token.abilities,
-          lastUsedAt: token.lastUsedAt,
-          expiresAt: token.expiresAt,
-          //   createdAt: token.createdAt,
-        })),
+        address: {
+          street: address.street,
+          house_number: address.house_number,
+          neighborhood: address.neighborhood,
+          city: address.city,
+          state: address.state,
+        },
       })
     } catch (error) {
-      return response.unauthorized({
-        message: 'Token inválido',
-      })
+      console.error(error)
+      return response.status(500).json({ message: 'Erro ao buscar endereço' })
     }
   }
   /**

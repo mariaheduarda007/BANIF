@@ -25,7 +25,7 @@ export default class Address extends BaseModel {
   @column()
   declare state: string
 
-  @belongsTo(() => User, { foreignKey: 'user_id' })
+  @belongsTo(() => User, { foreignKey: 'user_id_fk' })
   declare user: BelongsTo<typeof User>
   
 }

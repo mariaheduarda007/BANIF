@@ -10,6 +10,7 @@ import Balance from "../../components/clientBalance";
 import Data from "../../components/clientData";
 
 export default function ViewClient() {
+  const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
   const dataUser = getDataUser();
@@ -39,16 +40,11 @@ export default function ViewClient() {
         </Container>
       ) : (
         <Container className="mt-2">
-          <div className="row">
-            <div className="col-md-6">
-              <Balance />
-            </div>
-            <div className="col-md-6">
-              <Data />
-            </div>
-          </div>
+            <Balance />
+            <Data />
         </Container>
       )}
     </>
   );
 }
+ 

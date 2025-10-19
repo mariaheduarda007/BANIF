@@ -14,6 +14,11 @@ export default function Data() {
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [createdAt, setCreatedAt] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
 
   useEffect(() => {
     Client.get("/auth/me")
@@ -25,6 +30,19 @@ export default function Data() {
         const date = new Date(clientData.createdAt);
         const formattedDate = date.toLocaleDateString("pt-BR");
         setCreatedAt(formattedDate);
+
+        Client.get(`auth/users/${clientData.id}/address`)
+          .then((resAddress) => {
+            const addressData = resAddress.data.address;
+            setStreet(addressData.street);
+            setHouseNumber(addressData.house_number);
+            setNeighborhood(addressData.neighborhood);
+            setCity(addressData.city);
+            setState(addressData.state);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch(function (error) {
         setView(true);
@@ -36,14 +54,16 @@ export default function Data() {
   }, []);
 
   return (
-    <Container>
-      <Title>Informações pessoais</Title>
-        <Container className="mt-2">
-          <h3>{name}</h3>
-          <h3>CPF: {cpf}</h3>
-          <h3>{email}</h3>
-          <h3>Data de criação da conta: {createdAt}</h3>
-        </Container>
-    </Container>
+    <div>
+      <Container className="mt-2">
+        <Title>Informações pessoais</Title>
+        <h3>{name}</h3>
+        <h3>CPF: {cpf}</h3>
+        <h3>{email}</h3>
+        <h3>Data de criação da conta: {createdAt}</h3>
+        <h3>Endereço: {street}, {houseNumber}, {neighborhood}</h3>
+        <h3>{city}, {state}</h3>
+      </Container>
+    </div>
   );
 }

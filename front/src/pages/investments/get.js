@@ -17,42 +17,19 @@ export default function Create() {
   const permissions = getPermissions()
   const dataUser  = getDataUser()
 
-  // function fetchData() {
-
-  //     setLoad(true)
-  //     setTimeout(() => {
-
-  //         Client.get('disciplinas/create').then(res => {
-  //             const cursos = res.data
-  //             console.log(cursos)
-  //             setData(cursos.data)
-  //         })
-  //         .catch(function(error) {
-  //             console.log(error)
-  //         })
-  //         .finally( () => {
-  //             setLoad(false)
-  //         })
-
-  //     }, 1000)
-  // }
-
   function verifyPermission() {
-      // Não Autenticado
       if(!dataUser) navigate('/login')
-      // Não Autorizado (rota anterior)
-      else if(permissions.createInvestments === 0) navigate(-1)
+      else if(permissions.getInvestments === 0) navigate(-1)
   }
 
   useEffect(() => {
       verifyPermission()
-    //   sendData()
   }, []);
 
   function sendData() {
     const investments = { value: value };
 
-    Client.put("auth/investments/update/" + accountNumber, investments)
+    Client.put("auth/investments/get/" + accountNumber, investments)
       .then((response) => {
         alert("Transação realizada com sucesso!");
         navigate("/home");
@@ -98,7 +75,7 @@ export default function Create() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Submit id="submit" value="Transferir para Investimentos" onClick={() => sendData()} />
+          <Submit id="submit" value="Resgatar para Conta Corrente" onClick={() => sendData()} />
           <Submit value="Voltar" onClick={() => navigate("/home")} />
         </Container>
       )}

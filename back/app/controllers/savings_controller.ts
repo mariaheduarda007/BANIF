@@ -1,24 +1,35 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import SavingsPolicy from '#policies/savings_policy'
 import Savings from '#models/savings'
-import { createSavings } from '#validators/savings'
+import { updateSavings } from '#validators/savings'
 import Account from '#models/account'
 
 export default class SavingsController {
-  async store({ request, response, auth, bouncer }: HttpContext) {
-    const payload = await request.validateUsing(createSavings)
+  async update({ params, request, response, auth, bouncer }: HttpContext) {
+    const payload = await request.validateUsing(updateSavings)
     try {
       const user = auth.getUserOrFail()
 
-      if (await bouncer.with(SavingsPolicy).denies('create')) {
+      if (await bouncer.with(SavingsPolicy).denies('update')) {
         return response.forbidden({
           message: 'Você não tem permissão para realizar uma transação para Poupança',
         })
       }
 
-      const savings = await Savings.create({
-        ...payload,
-      })
+      const account = await Account.query().where('account_number', params.id).firstOrFail()
+
+      if (account.balance < payload.value) {
+        return response.forbidden({
+          message: 'Você não tem saldo suficiente para realizar uma transação para Poupança',
+        })
+      }
+      account.balance -= payload.value
+      await account.save()
+
+      const savings = await Savings.query().where('account_number_fk', params.id).firstOrFail()
+      savings.value += payload.value
+      await savings.save()
+
       return response.status(201).json({
         message: 'OK',
         data: savings,
@@ -31,34 +42,40 @@ export default class SavingsController {
     }
   }
 
-  async get({ auth, response, bouncer }: HttpContext) {
+  async get({ params, request, response, auth, bouncer }: HttpContext) {
+    const payload = await request.validateUsing(updateSavings)
     try {
       const user = auth.getUserOrFail()
 
-      if (await bouncer.with(SavingsPolicy).denies('get')) {
+      if (await bouncer.with(SavingsPolicy).denies('update')) {
         return response.forbidden({
           message: 'Você não tem permissão para resgatar uma quantia da Poupança',
         })
       }
 
-      const account = await Account.query().where('id_user_fk', user.id)
+      const account = await Account.query().where('account_number', params.id).firstOrFail()
+      const savings = await Savings.query().where('account_number_fk', params.id).firstOrFail()
 
-      if (!account || account.length === 0) {
-        console.log(user.id)
-        return response.status(404).json({ message: 'Conta não encontrada' })
+      if (payload.value > savings.value) {
+        return response.forbidden({
+          message: 'O valor informado é maior que o saldo em Poupança',
+        })
       }
 
-      const account_number = account[0].account_number
+      savings.value -= payload.value
+      await savings.save()
 
-      const savings = await Savings.query().where('account_number_fk', account_number)
+      account.balance += payload.value
+      await account.save()
 
-      return response.status(200).json({
+      return response.status(201).json({
         message: 'OK',
         data: savings,
       })
     } catch (error) {
       return response.status(500).json({
         message: 'ERROR',
+        details: error.message,
       })
     }
   }

@@ -60,6 +60,6 @@ export const Submit = styled.input.attrs({ type: "submit" })`
 
   &#submit {
     background-color: lightseagreen;
-    width: 220px;
+    width: 240px;
   }
 `;

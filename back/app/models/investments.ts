@@ -10,7 +10,7 @@ export default class Investments extends BaseModel {
   declare value: number
 
   @column()
-  declare account_number_fk: number
+  declare account_number_fk: string
 
   @belongsTo(() => User, { foreignKey: 'account_number_fk' })
   declare user: BelongsTo<typeof User>

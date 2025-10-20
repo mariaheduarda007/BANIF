@@ -6,3 +6,10 @@ export const createInvestments = vine.compile(
     account_number_fk: vine.number().positive(),
   })
 )
+
+
+export const updateInvestments = vine.compile(
+  vine.object({
+    value: vine.number().positive()
+  })
+)

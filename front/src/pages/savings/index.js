@@ -14,53 +14,33 @@ export default function Create() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const permissions = getPermissions()
-  const dataUser  = getDataUser()
-
-  // function fetchData() {
-
-  //     setLoad(true)
-  //     setTimeout(() => {
-
-  //         Client.get('disciplinas/create').then(res => {
-  //             const cursos = res.data
-  //             console.log(cursos)
-  //             setData(cursos.data)
-  //         })
-  //         .catch(function(error) {
-  //             console.log(error)
-  //         })
-  //         .finally( () => {
-  //             setLoad(false)
-  //         })
-
-  //     }, 1000)
-  // }
+  const permissions = getPermissions();
+  const dataUser = getDataUser();
 
   function verifyPermission() {
-      // Não Autenticado
-      if(!dataUser) navigate('/login')
-      // Não Autorizado (rota anterior)
-      else if(permissions.createSavings === 0) navigate(-1)
+    if (!dataUser) navigate("/login");
+    else if (permissions.createSavings === 0) navigate(-1);
   }
 
   useEffect(() => {
-      verifyPermission()
-    //   sendData()
+    verifyPermission();
   }, []);
 
   function sendData() {
-    const savings = { account_number_fk: accountNumber, value: value };
+    const savings = { value: value };
 
-    Client.post("auth/savings", savings)
+    Client.put("auth/savings/update/" + accountNumber, savings)
       .then((response) => {
-        alert(JSON.stringify(response.data));
+        alert("Transação realizada com sucesso!");
+        navigate("/home");
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response) {
+          alert(error.response.data.message); 
+        } else {
+          console.error(error);
+        }
       });
-
-    navigate("/home");
   }
 
   return (
@@ -94,7 +74,11 @@ export default function Create() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Submit id="submit" value="Transferir para Poupança" onClick={() => sendData()} />
+          <Submit
+            id="submit"
+            value="Transferir para Poupança"
+            onClick={() => sendData()}
+          />
           <Submit value="Voltar" onClick={() => navigate("/home")} />
         </Container>
       )}

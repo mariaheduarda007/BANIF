@@ -14,45 +14,23 @@ export default function Create() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const permissions = getPermissions()
-  const dataUser  = getDataUser()
+  const permissions = getPermissions();
+  const dataUser = getDataUser();
 
-  // function fetchData() {
-
-  //     setLoad(true)
-  //     setTimeout(() => {
-
-  //         Client.get('disciplinas/create').then(res => {
-  //             const cursos = res.data
-  //             console.log(cursos)
-  //             setData(cursos.data)
-  //         })
-  //         .catch(function(error) {
-  //             console.log(error)
-  //         })
-  //         .finally( () => {
-  //             setLoad(false)
-  //         })
-
-  //     }, 1000)
-  // }
 
   function verifyPermission() {
-      // Não Autenticado
-      if(!dataUser) navigate('/login')
-      // Não Autorizado (rota anterior)
-      else if(permissions.createInvestments === 0) navigate(-1)
+    if (!dataUser) navigate("/login");
+    else if (permissions.getSavings === 0) navigate(-1);
   }
 
   useEffect(() => {
-      verifyPermission()
-    //   sendData()
+    verifyPermission();
   }, []);
 
   function sendData() {
-    const investments = { value: value };
+    const savings = { value: value };
 
-    Client.put("auth/investments/update/" + accountNumber, investments)
+    Client.put("auth/savings/get/" + accountNumber, savings)
       .then((response) => {
         alert("Transação realizada com sucesso!");
         navigate("/home");
@@ -64,7 +42,6 @@ export default function Create() {
           console.error(error);
         }
       });
-
   }
 
   return (
@@ -98,7 +75,11 @@ export default function Create() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Submit id="submit" value="Transferir para Investimentos" onClick={() => sendData()} />
+          <Submit
+            id="submit"
+            value="Resgatar para Conta Corrente"
+            onClick={() => sendData()}
+          />
           <Submit value="Voltar" onClick={() => navigate("/home")} />
         </Container>
       )}

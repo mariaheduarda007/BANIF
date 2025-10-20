@@ -5,7 +5,7 @@ import { permissions } from '../utils/permissions.js'
 
 
 export default class InvestmentsPolicy extends BasePolicy {
-  create(user: User | null): AuthorizerResponse {
+  update(user: User | null): AuthorizerResponse {
     if (!user) return false
     return permissions[user.id_role_fk].createInvestments
   }

@@ -37,9 +37,30 @@ router
     router.post('/register', '#controllers/auth_controller.register')
     router.post('/login', '#controllers/auth_controller.login')
     // start/routes.ts
-
   })
   .prefix('/auth')
+
+router
+  .group(() => {
+    router.resource('savings', '#controllers/savings_controller')
+  })
+  .prefix('/auth')
+  .use([middleware.auth()])
+
+ router
+  .group(() => {
+    router.put('savings/update/:id', '#controllers/savings_controller.update')
+    router.put('savings/get/:id', '#controllers/savings_controller.get')
+  })
+  .prefix('/auth')
+  .use([middleware.auth()])
+
+   router.group(() => {
+    router.put('investments/update/:id', '#controllers/investments_controller.update')
+    router.put('investments/get/:id', '#controllers/investments_controller.get')
+  })
+  .prefix('/auth')
+  .use([middleware.auth()])
 
 // protegidas
 router
@@ -50,11 +71,8 @@ router
     router.post('/tokens', '#controllers/auth_controller.createToken')
     router.get('/statement', '#controllers/statement_controller.index')
     router.post('/statement', '#controllers/statement_controller.store')
-    router.post('/savings', '#controllers/savings_controller.store')
-    router.get('/savings', '#controllers/savings_controller.get')
-        router.post('/investments', '#controllers/investments_controller.store')
+    router.post('/investments', '#controllers/investments_controller.store')
     router.get('/investments', '#controllers/investments_controller.get')
-
   })
   .prefix('/auth')
   .use(middleware.auth())

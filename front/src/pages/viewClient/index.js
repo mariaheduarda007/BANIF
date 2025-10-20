@@ -9,23 +9,26 @@ import Balance from "../../components/clientBalance";
 import Data from "../../components/clientData";
 import ClientBalanceFromList from "../../components/clientBalanceFromList";
 import ClientDataFromList from "../../components/clientDataFromList";
+import { Label, Input, Select, Submit } from "./style";
 
 export default function ViewClient() {
   const [load, setLoad] = useState(true);
   const navigate = useNavigate();
   const dataUser = getDataUser();
   const permissions = getPermissions();
-  
-  // pega o ID do cliente vindo da tela de lista, se houver
+
   const location = useLocation();
-  const clientIdFromList = location.state?.client.id;
-  console.log("ID do cliente vindo da lista:", clientIdFromList);
-  console.log(ClientDataFromList);
+  const clientFromList = location.state?.client;
+  console.log("ID do cliente vindo da lista:", clientFromList.id);
+
+  function createTransfer(clientMakingTransfer) {
+    navigate("/transfer", { state: { clientMakingTransfer } });
+  }
 
   useEffect(() => {
     if (!dataUser) {
       navigate("/login");
-    } else if (permissions.listStatement === 0 && clientIdFromList) {
+    } else if (permissions.listStatement === 0 && clientFromList.id) {
       // se for um gerente sem permissão pra ver dados de outros clientes
       navigate(-1);
     } else {
@@ -54,16 +57,27 @@ export default function ViewClient() {
     <>
       <NavigationBar />
       <Container className="mt-2">
-        {clientIdFromList ? (
+        {clientFromList.id ? (
           <>
-            <ClientBalanceFromList clientId={clientIdFromList} />
-            <ClientDataFromList clientId={clientIdFromList} />
+            <ClientBalanceFromList clientId={clientFromList.id} />
+            <ClientDataFromList clientId={clientFromList.id} />
+            <Submit value="Gerar Extrato"></Submit>
+            <Submit
+              value="Realizar Transferência"
+              onClick={() => createTransfer(clientFromList)}
+            ></Submit>
+            <Submit value="Consultar Poupança"></Submit>
+            <Submit value="Fazer Aplicação"></Submit>
           </>
         ) : (
           // 👇 cliente logado vendo seus próprios dados
           <>
             <Balance />
             <Data />
+            <Submit value="Gerar Extrato"></Submit>
+            <Submit value="Realizar Transferência"></Submit>
+            <Submit value="Consultar Poupança"></Submit>
+            <Submit value="Fazer Aplicação"></Submit>
           </>
         )}
       </Container>

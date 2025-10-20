@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import ClientPolicy from '#policies/client_policy'
 import User from '#models/user'
 import Account from '#models/account'
+import { request } from 'http'
 
 export default class ClientsController {
   async index({ auth, response, bouncer }: HttpContext) {
@@ -79,6 +80,97 @@ export default class ClientsController {
       console.error(error)
       return response.status(500).json({
         message: 'Erro ao visualizar dados da conta',
+        error: error.message,
+      })
+    }
+  }
+  async transaction({ auth, request, response }: HttpContext) {
+    try {
+      // garante que o usuário está autenticado
+      const loggedUser = await auth.getUserOrFail()
+
+      // pega os dados enviados pelo frontend
+      const {
+        agencyNumberMakingTransfer,
+        accountNumberMakingTransfer,
+        agencyNumberReceivingTransfer,
+        accountNumberReceivingTransfer,
+        value,
+      } = request.only([
+        'agencyNumberMakingTransfer',
+        'accountNumberMakingTransfer',
+        'agencyNumberReceivingTransfer',
+        'accountNumberReceivingTransfer',
+        'value',
+      ])
+
+      // busca as contas no banco
+      const accountFrom = await Account.query()
+        .where('agency_number', agencyNumberMakingTransfer)
+        .where('account_number', accountNumberMakingTransfer)
+        .first()
+
+      const accountTo = await Account.query()
+        .where('agency_number', agencyNumberReceivingTransfer)
+        .where('account_number', accountNumberReceivingTransfer)
+        .first()
+
+        // validações básicas
+        if (!accountFrom || !accountTo) {
+          return response.badRequest({
+            message: 'Conta de origem ou destino não encontrada.',
+          })
+        }
+        if(value <= 0 || value == 0){
+          return response.badRequest({
+            message: 'Determine um valor válido.',
+          })
+        }
+        const amount = Number(value)
+
+      if (accountFrom.balance < amount) {
+        return response.badRequest({
+          message: 'Saldo insuficiente.',
+        })
+      }
+      accountFrom.balance = Number(accountFrom.balance) - amount
+      await accountFrom.save()
+      accountTo.balance = Number(accountTo.balance) + amount
+      await accountTo.save()
+
+      // atualiza os saldos
+      // accountFrom.balance -= value
+      // accountTo.balance += value
+
+      // await accountFrom.save()
+      // await accountTo.save()
+
+      // (opcional) salva um registro da transação
+      // await Transaction.create({
+      //   sender_id: accountFrom.id,
+      //   receiver_id: accountTo.id,
+      //   value,
+      // })
+
+      return response.ok({
+        message: 'Transferência realizada com sucesso!',
+        data: {
+          from: {
+            agency: agencyNumberMakingTransfer,
+            account: accountNumberMakingTransfer,
+            newBalance: accountFrom.balance,
+          },
+          to: {
+            agency: agencyNumberReceivingTransfer,
+            account: accountNumberReceivingTransfer,
+            newBalance: accountTo.balance,
+          },
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({
+        message: 'Erro ao tentar realizar a transação.',
         error: error.message,
       })
     }

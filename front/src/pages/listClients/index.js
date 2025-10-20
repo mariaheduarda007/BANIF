@@ -25,6 +25,7 @@ export default function ListClients() {
           const formattedData = clients.map((client) => ({
             ...client,
             accountNumber: client.account?.accountNumber || "",
+            agencyNumber: client.account?.agencyNumber || "",
           }));
           setData(formattedData);
 
@@ -65,10 +66,10 @@ export default function ListClients() {
         <Container className="mt-2">
           <DataTable
             title="Clientes Cadastrados"
-            rows={["Nome", "CPF", "Email", "Número da Conta", "Id"]}
+            rows={["Nome", "CPF", "Email", "Número da Conta", "Número da Agência", "Id"]}
             hide={[true, false, true, false, true]}
             data={data}
-            keys={["name", "cpf", "email", "accountNumber", "id"]}
+            keys={["name", "cpf", "email", "accountNumber", "agencyNumber", "id"]}
             resource="clients"
             crud={["listClients"]}
           />

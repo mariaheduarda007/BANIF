@@ -17,20 +17,20 @@ export default function Home() {
 
   function fetchData() {
     setLoad(true);
-    setTimeout(() => {
-      Client.get("/auth/transaction")
-        .then((res) => {
-          const statement = res.data.data;
-          console.log(JSON.stringify(statement));
-          setData(statement);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoad(false);
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //   Client.get("/auth/transaction")
+    //     .then((res) => {
+    //       const statement = res.data.data;
+    //       console.log(JSON.stringify(statement));
+    //       setData(statement);
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     })
+    //     .finally(() => {
+    //       setLoad(false);
+    //     });
+    // }, 1000);
   }
 
   function verifyPermission() {

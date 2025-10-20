@@ -44,14 +44,15 @@ router
   // protegidas
   router
   .group(() => {
-    router.get('/viewAccount/:id?', '#controllers/clients_controller.viewAccount')
-    router.post('/logout', '#controllers/auth_controller.logout')
+    router.post('/tokens', '#controllers/auth_controller.createToken')
+    router.get('/tokens', '#controllers/auth_controller.tokens')
     router.get('/me/:id?', '#controllers/auth_controller.me')
     router.get('/users/:id/address', '#controllers/auth_controller.getUserAddress')
-    router.get('/tokens', '#controllers/auth_controller.tokens')
-    router.post('/tokens', '#controllers/auth_controller.createToken')
+    router.get('/viewAccount/:id?', '#controllers/clients_controller.viewAccount')
+    router.post('/transaction', '#controllers/clients_controller.transaction')
     // router.get('/statement', '#controllers/statement_controller.index')
     // router.get('/statement', '#controllers/statement_controller.store')
+    router.post('/logout', '#controllers/auth_controller.logout')
   })
   .prefix('/auth')
   .use(middleware.auth())

@@ -40,8 +40,8 @@ export default function Transfer() {
 
   function sendData() {
     const transaction = {
-      agencyNumberMakingTransfer: clientFromView.agencyNumber,
-      accountNumberMakingTransfer: clientFromView.accountNumber,
+      agencyNumberMakingTransfer: clientFromView?.agencyNumber,
+      accountNumberMakingTransfer: clientFromView?.accountNumber,
       agencyNumberReceivingTransfer: agencyNumberReceivingTransfer,
       accountNumberReceivingTransfer: accountNumberReceivingTransfer,
       value: value,
@@ -53,6 +53,8 @@ export default function Transfer() {
         setValue(0);
         setAccountNumberReceivingTransfer("");
         setAgencyNumberReceivingTransfer("");
+
+        //MUDAR MIGRATION OU SEI LA PRA FICAR AQUELE DECIMAL 12,2 NO BANCO
       })
       .catch((error) => {
         if (error.response?.data?.message) {

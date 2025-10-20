@@ -19,7 +19,7 @@ export default function ViewClient() {
 
   const location = useLocation();
   const clientFromList = location.state?.client;
-  console.log("ID do cliente vindo da lista:", clientFromList.id);
+  console.log("ID do cliente vindo da lista:", clientFromList?.id);
 
   function createTransfer(clientMakingTransfer) {
     navigate("/transfer", { state: { clientMakingTransfer } });
@@ -57,7 +57,7 @@ export default function ViewClient() {
     <>
       <NavigationBar />
       <Container className="mt-2">
-        {clientFromList.id ? (
+        {clientFromList?.id? (
           <>
             <ClientBalanceFromList clientId={clientFromList.id} />
             <ClientDataFromList clientId={clientFromList.id} />
@@ -70,12 +70,15 @@ export default function ViewClient() {
             <Submit value="Fazer Aplicação"></Submit>
           </>
         ) : (
-          // 👇 cliente logado vendo seus próprios dados
+          // cliente logado vendo seus próprios dados
           <>
             <Balance />
             <Data />
             <Submit value="Gerar Extrato"></Submit>
-            <Submit value="Realizar Transferência"></Submit>
+            <Submit
+              value="Realizar Transferência oiiiii"
+              onClick={() => createTransfer(clientFromList)}
+            ></Submit>
             <Submit value="Consultar Poupança"></Submit>
             <Submit value="Fazer Aplicação"></Submit>
           </>

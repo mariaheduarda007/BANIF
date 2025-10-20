@@ -10,7 +10,7 @@ export default class Transaction extends BaseModel {
   declare id: number
 
   @column()
-  declare account_number_fk: number
+  declare account_number_fk: string
 
   @column()
   declare value: number
@@ -19,7 +19,7 @@ export default class Transaction extends BaseModel {
   declare type: boolean
   
   @column()
-  declare account_number_transfer: number
+  declare account_number_transfer: string
   
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

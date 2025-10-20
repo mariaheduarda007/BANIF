@@ -2,7 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import ClientPolicy from '#policies/client_policy'
 import User from '#models/user'
 import Account from '#models/account'
-import { request } from 'http'
+import Transaction from '#models/transaction'
+import Statement from '#models/statement'
 
 export default class ClientsController {
   async index({ auth, response, bouncer }: HttpContext) {
@@ -86,11 +87,9 @@ export default class ClientsController {
   }
   async transaction({ auth, request, response }: HttpContext) {
     try {
-      // garante que o usuário está autenticado
       const loggedUser = await auth.getUserOrFail()
 
-      // pega os dados enviados pelo frontend
-      const {
+      let {
         agencyNumberMakingTransfer,
         accountNumberMakingTransfer,
         agencyNumberReceivingTransfer,
@@ -104,6 +103,17 @@ export default class ClientsController {
         'value',
       ])
 
+      // se nao for passada a conta que ta fazendo a transferencia, assume a do loggedUser
+      if (agencyNumberMakingTransfer == undefined || accountNumberMakingTransfer == undefined) {
+        let loggedUserAccount = await Account.query().where('user_id_fk', loggedUser.id).first()
+        if (!loggedUserAccount) {
+          return response.badRequest({ message: 'Conta do usuário não encontrada.' })
+        }
+
+        agencyNumberMakingTransfer = loggedUserAccount?.agency_number
+        accountNumberMakingTransfer = loggedUserAccount?.account_number
+      }
+
       // busca as contas no banco
       const accountFrom = await Account.query()
         .where('agency_number', agencyNumberMakingTransfer)
@@ -115,42 +125,61 @@ export default class ClientsController {
         .where('account_number', accountNumberReceivingTransfer)
         .first()
 
-        // validações básicas
-        if (!accountFrom || !accountTo) {
-          return response.badRequest({
-            message: 'Conta de origem ou destino não encontrada.',
-          })
-        }
-        if(value <= 0 || value == 0){
-          return response.badRequest({
-            message: 'Determine um valor válido.',
-          })
-        }
-        const amount = Number(value)
+      // validaçoes basicas
+      if (!accountFrom || !accountTo) {
+        return response.badRequest({
+          message: 'Conta de origem ou destino não encontrada.',
+        })
+      }
+      if (value <= 0 || isNaN(Number(value))) {
+        return response.badRequest({
+          message: 'Determine um valor válido.',
+        })
+      }
+      //converte o valor
+      const amount = Number(value)
 
       if (accountFrom.balance < amount) {
         return response.badRequest({
           message: 'Saldo insuficiente.',
         })
       }
+      // realiza a transferencia
       accountFrom.balance = Number(accountFrom.balance) - amount
       await accountFrom.save()
       accountTo.balance = Number(accountTo.balance) + amount
       await accountTo.save()
 
-      // atualiza os saldos
-      // accountFrom.balance -= value
-      // accountTo.balance += value
+      // salva um registro na transaction
+      await Transaction.create({
+        value,
+        type: true, // recebeu
+        account_number_transfer: accountFrom.account_number,
+        account_number_fk: accountTo.account_number,
+      })
+      await Transaction.create({
+        value,
+        type: false, // deu
+        account_number_transfer: accountFrom.account_number,
+        account_number_fk: accountTo.account_number,
+      })
+      //id	value	type (1 recebeu 2 deu)	account_number_transfer	account_number_fk	created_at
 
-      // await accountFrom.save()
-      // await accountTo.save()
 
-      // (opcional) salva um registro da transação
-      // await Transaction.create({
-      //   sender_id: accountFrom.id,
-      //   receiver_id: accountTo.id,
-      //   value,
-      // })
+      // salva um registro no statement
+      await Statement.create({
+        value,
+        type: true, // recebeu
+        origin: `Transferência recebida de ${accountFrom.account_number}`,
+        account_number_fk: accountTo.account_number,
+      })
+      await Statement.create({
+        value,
+        type: false, // deu
+        origin: `Transferência enviada para ${accountTo.account_number}`,
+        account_number_fk: accountFrom.account_number,
+      })
+      //id	value	type	origin	account_number_fk	created_at	
 
       return response.ok({
         message: 'Transferência realizada com sucesso!',

@@ -9,8 +9,8 @@ export default class Statement extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-   @column()
-  declare account_number_fk: number
+  @column()
+  declare account_number_fk: string
 
   @column()
   declare value: number

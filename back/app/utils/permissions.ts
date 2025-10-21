@@ -1,12 +1,19 @@
-// create statement - ange
 
+//* organizar a acessibilidade (autorização) a tela depois
+
+//preciso ver como faço para o gerente conseguir ver o o viewClient individual mas manter ele unico
+//pro cliente ----- feito
 export const permissions = [
   {
-    listClient: false,  // ange
-    viewClient: false, // ange
-    createClient: false, // ange
-    listStatement: false, // feito
+    listClient: false,  // ange ---- feito
+    viewClient: false, // ange ---- feito
+    createClient: false, // ange ---- feito
+    
     createTransaction: false, // ange
+    createStatement: false, // ange  
+
+
+    listStatement: false, // feito
     createSavings: false,  // maria
     getSavings: false, // maria
     createInvestments: false, // maria

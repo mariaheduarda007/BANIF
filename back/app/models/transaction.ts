@@ -10,20 +10,15 @@ export default class Transaction extends BaseModel {
   declare id: number
 
   @column()
-  declare account_number_fk: number
+  declare account_number_sender: string
+
+  @column()
+  declare account_number_recipient: string
 
   @column()
   declare value: number
-
-  @column()
-  declare type: boolean
-  
-  @column()
-  declare account_number_transfer: number
   
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   
-  @belongsTo(() => Account, { foreignKey: 'account_number_fk' })
-      declare account: BelongsTo<typeof Account> 
 }

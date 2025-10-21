@@ -1,0 +1,116 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router";
+import { Container } from "react-bootstrap";
+import { OrbitProgress } from "react-loading-indicators";
+import NavigationBar from "../../components/navigationbar";
+import { getDataUser } from "../../service/UserService";
+import { getPermissions } from "../../service/PermissionService";
+import Balance from "../../components/clientBalance";
+import Data from "../../components/clientData";
+import ClientBalanceFromList from "../../components/clientBalanceFromList";
+import ClientDataFromList from "../../components/clientDataFromList";
+import { Label, Input, Select, Submit } from "./style";
+
+export default function ViewClient() {
+  const [load, setLoad] = useState(true);
+  const navigate = useNavigate();
+  const dataUser = getDataUser();
+  const permissions = getPermissions();
+
+  const location = useLocation();
+  const clientFromList = location.state?.client;
+  console.log("ID do cliente vindo da lista:", clientFromList?.id);
+
+  function createTransfer(clientMakingTransfer) {
+    navigate("/transfer", { state: { clientMakingTransfer } });
+  }
+  function generateStatement(clientGeneratingStatement) {
+    navigate("/statement", { state: { clientGeneratingStatement } });
+  }
+
+  function updateSavings(client) {
+    navigate("/savings" , { state: { client } });
+  }
+
+  function updateInvestments(client) {
+    navigate("/investments", { state: { client } });
+  }
+
+  function getSavings() {
+    navigate("/savings/get" );
+  }
+
+  function getInvestments(client) {
+    navigate("/investments/get", { state: { client } });
+  }
+
+  useEffect(() => {
+    if (!dataUser) {
+      navigate("/login");
+    } else if (permissions.listStatement === 0 && clientFromList.id) {
+      // se for um gerente sem permissão pra ver dados de outros clientes
+      navigate(-1);
+    } else {
+      setLoad(false);
+    }
+  }, []);
+
+  if (load) {
+    return (
+      <>
+        <NavigationBar />
+        <Container className="d-flex justify-content-center mt-5">
+          <OrbitProgress
+            variant="spokes"
+            color="#32cd32"
+            size="medium"
+            text=""
+            textColor=""
+          />
+        </Container>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <NavigationBar />
+      <Container className="mt-2">
+        {clientFromList?.id ? (
+          <>
+            <ClientBalanceFromList clientId={clientFromList.id} />
+            <ClientDataFromList clientId={clientFromList.id} />
+            <Submit
+              value="Gerar Extrato"
+              onClick={() => generateStatement(clientFromList)}
+            ></Submit>
+            <Submit
+              value="Realizar Transferência"
+              onClick={() => createTransfer(clientFromList)}
+            ></Submit>
+            <Submit value="Fazer Aplicação" onClick={() => updateInvestments(clientFromList)}></Submit>
+            <Submit value="Resgatar Aplicação" onClick={() => getInvestments(clientFromList)}></Submit>
+          </>
+        ) : (
+          // cliente logado vendo seus próprios dados
+          <>
+            <Balance />
+            <Data />
+            <Submit
+              value="Gerar Extrato"
+              onClick={() => generateStatement(clientFromList)}
+            ></Submit>
+            <Submit
+              value="Realizar Transferência"
+              onClick={() => createTransfer(clientFromList)}
+            ></Submit>
+            <Submit value="Consultar Poupança" onClick={() => updateSavings(clientFromList)}></Submit>
+            <Submit value="Resgatar Poupança" onClick={() => getSavings(clientFromList)}></Submit>
+            <Submit value="Resgatar Aplicação" onClick={() => getInvestments(clientFromList)}></Submit>
+            <Submit value="Fazer Aplicação" onClick={() => updateInvestments(clientFromList)}></Submit>
+          </>
+        )}
+      </Container>
+    </>
+  );
+}

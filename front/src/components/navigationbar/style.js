@@ -6,3 +6,6 @@ export const Image = styled.img`
     border-radius: 50%;
     margin-bottom: 12px;
 `
+export const Navbar = styled.nav`
+background-color: #0f3b39ff;
+`

@@ -6,18 +6,20 @@ export default class extends BaseSeeder {
     await Address.createMany([
       {
         id: 1,
+        user_id_fk: 1,
         street: 'Cascavel',
         neighborhood: 'Flamingo',
-        number: 21,
+        house_number: 21,
         city: 'Matinhos',
         state: 'Paraná',
 
       },
       {
         id: 2,
+        user_id_fk: 2,
         street: 'Cascavel',
         neighborhood: 'Flamingo',
-        number: 11,
+        house_number: 11,
         city: 'Matinhos',
         state: 'Paraná',
       },

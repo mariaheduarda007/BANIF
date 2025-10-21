@@ -30,49 +30,54 @@ router.get('/hello', async () => {
   }
 })
 
-// Rotas de autenticação (públicas)
 router
   .group(() => {
     // públicas
-    router.post('/register', '#controllers/auth_controller.register')
     router.post('/login', '#controllers/auth_controller.login')
     // start/routes.ts
   })
   .prefix('/auth')
-
-router
+  
+  router
   .group(() => {
     router.resource('savings', '#controllers/savings_controller')
   })
   .prefix('/auth')
   .use([middleware.auth()])
-
- router
+  
+  router
   .group(() => {
     router.put('savings/update/:id', '#controllers/savings_controller.update')
     router.put('savings/get/:id', '#controllers/savings_controller.get')
   })
   .prefix('/auth')
   .use([middleware.auth()])
-
-   router.group(() => {
+  
+  router
+  .group(() => {
     router.put('investments/update/:id', '#controllers/investments_controller.update')
     router.put('investments/get/:id', '#controllers/investments_controller.get')
+    router.post('/register', '#controllers/auth_controller.register')
+    router.get('/listClients', '#controllers/clients_controller.index')
   })
   .prefix('/auth')
   .use([middleware.auth()])
 
-// protegidas
 router
   .group(() => {
-    router.post('/logout', '#controllers/auth_controller.logout')
-    router.get('/me', '#controllers/auth_controller.me')
-    router.get('/tokens', '#controllers/auth_controller.tokens')
     router.post('/tokens', '#controllers/auth_controller.createToken')
     router.get('/statement', '#controllers/statement_controller.index')
     router.post('/statement', '#controllers/statement_controller.store')
     router.post('/investments', '#controllers/investments_controller.store')
     router.get('/investments', '#controllers/investments_controller.get')
+    router.get('/tokens', '#controllers/auth_controller.tokens')
+    router.get('/me/:id?', '#controllers/auth_controller.me')
+    router.get('/users/:id/address', '#controllers/auth_controller.getUserAddress')
+    router.get('/viewAccount/:id?', '#controllers/clients_controller.viewAccount')
+    router.post('/transaction', '#controllers/clients_controller.transaction')
+    router.get('/statement/:id?', '#controllers/statement_controller.index')
+    // router.get('/statement', '#controllers/statement_controller.store')
+    router.post('/logout', '#controllers/auth_controller.logout')
   })
   .prefix('/auth')
   .use(middleware.auth())

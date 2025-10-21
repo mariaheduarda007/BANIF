@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useState, useEffect, useContext } from "react";
 import { Container } from "react-bootstrap";
 import { OrbitProgress } from "react-loading-indicators";
@@ -9,12 +9,14 @@ import { getPermissions } from "../../service/PermissionService";
 import { getDataUser } from "../../service/UserService";
 
 export default function Create() {
-  const [accountNumber, setAccountNumber] = useState("");
+  const [clientId, setClientId] = useState("");
   const [load, setLoad] = useState(false);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const permissions = getPermissions();
   const dataUser = getDataUser();
+  const location = useLocation();
+  const clientFromView = location.state?.client;
 
   function verifyPermission() {
     if (!dataUser) navigate("/login");
@@ -26,16 +28,26 @@ export default function Create() {
   }, []);
 
   function sendData() {
-    const savings = { value: value };
+    const savings = {
+      id: clientFromView?.id,
+      accountNumber: clientFromView?.accountNumber,
+      value: value,
+    };
 
-    Client.put("auth/savings/update/" + accountNumber, savings)
+    if (!clientFromView) {
+      setClientId(dataUser.id);
+    } else {
+      setClientId(clientFromView.id);
+    }
+
+    Client.put("auth/savings/update/" + clientFromView?.id, savings)
       .then((response) => {
         alert("Transação realizada com sucesso!");
-        navigate("/home");
+        navigate(-1);
       })
       .catch((error) => {
         if (error.response) {
-          alert(error.response.data.message); 
+          alert(error.response.data.message);
         } else {
           console.error(error);
         }
@@ -56,19 +68,7 @@ export default function Create() {
           />
         </Container>
       ) : (
-         <Container className="mt-2">
-
-          <>
-            <Label>Número da Conta</Label>
-            <Input
-              type="text"
-              id="accountNumber"
-              name="accountNumber"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-            />
-          </>
- 
+        <Container className="mt-2">
           <Label>Valor</Label>
           <Input
             type="number"
@@ -82,7 +82,7 @@ export default function Create() {
             value="Transferir para Poupança"
             onClick={() => sendData()}
           />
-          <Submit value="Voltar" onClick={() => navigate("/home")} />
+          <Submit value="Voltar" onClick={() => navigate(-1)} />
         </Container>
       )}
     </>

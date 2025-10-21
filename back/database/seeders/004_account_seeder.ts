@@ -5,10 +5,10 @@ export default class extends BaseSeeder {
   async run() {
     await Account.createMany([
       {
-        account_number: '12345678900',
-        agency_number: '134465',
+        account_number: '12345-6',
+        agency_number: '1234-5',
         balance: 100,
-        id_user_fk: 2,        
+        user_id_fk: 2,        
       },
       
     ])

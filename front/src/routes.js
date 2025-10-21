@@ -2,10 +2,15 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import Error from "./pages/error";
-import Home from "./pages/savings";
-import Transfer from './pages/transaction'
-import Savings from './pages/savings'
-import Investments from './pages/investments/get'
+import Savings from "./pages/savings";
+import GetSavings from "./pages/savings/get";
+import Investments from "./pages/investments";
+import GetInvestments from "./pages/investments/get";
+import Transfer from "./pages/transaction";
+import NewClient from "./pages/newClient";
+import ListClients from "./pages/listClients";
+import ViewClient from "./pages/viewClient";
+import Statement from "./pages/statement";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +26,8 @@ const router = createBrowserRouter([
     element: <Error />,
   },
   {
-    path: "/home",
-    element: <Home />,
+    path: "/viewClient",
+    element: <ViewClient />,
   },
   {
     path: "/transfer",
@@ -33,8 +38,32 @@ const router = createBrowserRouter([
     element: <Savings />,
   },
   {
+    path: "/savings/get",
+    element: <GetSavings />,
+  },
+  {
     path: "/investments",
-    element: <Investments/>,
+    element: <Investments />,
+  },
+  {
+    path: "/investments/get",
+    element: <GetInvestments />,
+  },
+  {
+    path: "/newClient",
+    element: <NewClient />,
+  },
+  {
+    path: "/listClients",
+    element: <ListClients />,
+  },
+  {
+    path: "/viewClient",
+    element: <ViewClient />,
+  },
+  {
+    path: "/statement",
+    element: <Statement />,
   },
 ]);
 

@@ -40,7 +40,11 @@ export default function FormLogin() {
         setDataUser(load.user);
         setToken(load.token.value);
         setPermissions(load.permissions);
-        navigate("/home");
+        if (res.data.user.id_role_fk == 1) {
+            navigate("/listClients");
+          } else {
+            navigate("/viewClient");
+          }
       })
       .catch(function (error) {
         setView(true);

@@ -7,7 +7,7 @@ export default class extends BaseSeeder {
       {
         id: 1,
         value: 0,
-        account_number_fk:'12345678900'
+        account_number_fk:'12345-6'
       },
     ])
   }

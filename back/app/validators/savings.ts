@@ -9,6 +9,8 @@ export const createSavings = vine.compile(
 
 export const updateSavings = vine.compile(
   vine.object({
+    id: vine.number().positive().nullable(),
     value: vine.number().positive(),
+    account_number_fk: vine.number().positive().nullable(),
   })
 )

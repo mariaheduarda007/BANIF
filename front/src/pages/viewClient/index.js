@@ -85,7 +85,7 @@ export default function ViewClient() {
               onClick={() => generateStatement(clientFromList)}
             ></Submit>
             <Submit
-              value="Realizar Transferência oiiiii"
+              value="Realizar Transferência"
               onClick={() => createTransfer(clientFromList)}
             ></Submit>
             <Submit value="Consultar Poupança"></Submit>

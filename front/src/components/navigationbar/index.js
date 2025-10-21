@@ -115,7 +115,7 @@ function NavigationBar() {
           >
             <NavDropdown.Item
               onClick={() => myProfile()}
-              href="#"
+              href="/viewClient"
               className="me-5"
             >
               Minha Conta

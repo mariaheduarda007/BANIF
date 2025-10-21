@@ -18,8 +18,8 @@ export default class extends BaseSchema {
       table.string('state').notNullable()
       table.string('neighborhood').notNullable()
       table.integer('house_number').notNullable()
-      table.timestamp('created_at').notNullable()
-      table.timestamp('updated_at').nullable()
+      table.timestamp('created_at').notNullable().defaultTo(this.now())
+      table.timestamp('updated_at').nullable().defaultTo(this.now())
     })
   }
   async down() {

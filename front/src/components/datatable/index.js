@@ -59,7 +59,7 @@ export default function DataTable(props) {
                   );
                 })}
 
-                <td>
+                {/* <td>
                   {permissions[props.crud[VIEW]] ? (
                     <Button
                       variant="info"
@@ -78,7 +78,7 @@ export default function DataTable(props) {
                       </svg>
                     </Button>
                   ) : null}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

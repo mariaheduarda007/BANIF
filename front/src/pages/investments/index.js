@@ -14,8 +14,8 @@ export default function Create() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const permissions = getPermissions()
-  const dataUser  = getDataUser()
+  const permissions = getPermissions();
+  const dataUser = getDataUser();
 
   // function fetchData() {
 
@@ -38,14 +38,14 @@ export default function Create() {
   // }
 
   function verifyPermission() {
-      // Não Autenticado
-      if(!dataUser) navigate('/login')
-      // Não Autorizado (rota anterior)
-      else if(permissions.createInvestments === 0) navigate(-1)
+    // Não Autenticado
+    if (!dataUser) navigate("/login");
+    // Não Autorizado (rota anterior)
+    else if (permissions.createInvestments === 0) navigate(-1);
   }
 
   useEffect(() => {
-      verifyPermission()
+    verifyPermission();
     //   sendData()
   }, []);
 
@@ -59,12 +59,11 @@ export default function Create() {
       })
       .catch((error) => {
         if (error.response) {
-          alert(error.response.data.message); 
+          alert(error.response.data.message);
         } else {
           console.error(error);
         }
       });
-
   }
 
   return (
@@ -82,14 +81,18 @@ export default function Create() {
         </Container>
       ) : (
         <Container className="mt-2">
-          <Label>Número da Conta</Label>
-          <Input
-            type="text"
-            id="accountNumber"
-            name="accountNumber"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-          />
+         
+            <>
+              <Label>Número da Conta</Label>
+              <Input
+                type="text"
+                id="accountNumber"
+                name="accountNumber"
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+              />
+            </>
+          
           <Label>Valor</Label>
           <Input
             type="number"
@@ -98,7 +101,11 @@ export default function Create() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Submit id="submit" value="Transferir para Investimentos" onClick={() => sendData()} />
+          <Submit
+            id="submit"
+            value="Transferir para Investimentos"
+            onClick={() => sendData()}
+          />
           <Submit value="Voltar" onClick={() => navigate("/home")} />
         </Container>
       )}

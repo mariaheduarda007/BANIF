@@ -17,7 +17,6 @@ export default function Home() {
   const permissions = getPermissions();
 
   function fetchData() {
-    console.log("oi")
     setLoad(true);
     setTimeout(() =>
     {
@@ -63,11 +62,11 @@ export default function Home() {
         <Container className="mt-2">
           <DataTable
             title="Extrato"
-            rows={["Data", "Valor", "Origem", "Ações"]}
-            hide={[true, false, true, false]}
+            rows={["Data", "Valor", "Origem", ]}
+            hide={[true, false, true]}
             data={data}
             keys={["created_at", "value", "origin"]}
-            resource="disciplinas"
+            resource="statement"
             crud={["listStatement"]}
           />
         </Container>

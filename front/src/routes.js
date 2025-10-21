@@ -5,7 +5,7 @@ import Error from "./pages/error";
 import Home from "./pages/home";
 import Transfer from './pages/transaction'
 import Savings from './pages/savings'
-import Investments from './pages/investments'
+import Investments from './pages/investments/get'
 
 const router = createBrowserRouter([
   {

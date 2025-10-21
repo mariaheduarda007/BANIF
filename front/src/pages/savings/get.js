@@ -58,15 +58,18 @@ export default function Create() {
           />
         </Container>
       ) : (
-        <Container className="mt-2">
-          <Label>Número da Conta</Label>
-          <Input
-            type="text"
-            id="accountNumber"
-            name="accountNumber"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-          />
+         <Container className="mt-2">
+          <>
+            <Label>Número da Conta</Label>
+            <Input
+              type="text"
+              id="accountNumber"
+              name="accountNumber"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+            />
+          </>
+      
           <Label>Valor</Label>
           <Input
             type="number"

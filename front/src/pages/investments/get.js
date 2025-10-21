@@ -14,19 +14,20 @@ export default function Create() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const permissions = getPermissions()
-  const dataUser  = getDataUser()
+  const permissions = getPermissions();
+  const dataUser = getDataUser();
 
   function verifyPermission() {
-      if(!dataUser) navigate('/login')
-      else if(permissions.getInvestments === 0) navigate(-1)
+    if (!dataUser) navigate("/login");
+    else if (permissions.getInvestments === 0) navigate(-1);
   }
 
   useEffect(() => {
-      verifyPermission()
+    verifyPermission();
   }, []);
 
   function sendData() {
+
     const investments = { value: value };
 
     Client.put("auth/investments/get/" + accountNumber, investments)
@@ -36,12 +37,11 @@ export default function Create() {
       })
       .catch((error) => {
         if (error.response) {
-          alert(error.response.data.message); 
+          alert(error.response.data.message);
         } else {
           console.error(error);
         }
       });
-
   }
 
   return (
@@ -59,14 +59,17 @@ export default function Create() {
         </Container>
       ) : (
         <Container className="mt-2">
-          <Label>Número da Conta</Label>
-          <Input
-            type="text"
-            id="accountNumber"
-            name="accountNumber"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-          />
+            <>
+              <Label>Número da Conta</Label>
+              <Input
+                type="text"
+                id="accountNumber"
+                name="accountNumber"
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+              />
+            </>
+          
           <Label>Valor</Label>
           <Input
             type="number"
@@ -75,7 +78,11 @@ export default function Create() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-          <Submit id="submit" value="Resgatar para Conta Corrente" onClick={() => sendData()} />
+          <Submit
+            id="submit"
+            value="Resgatar para Conta Corrente"
+            onClick={() => sendData()}
+          />
           <Submit value="Voltar" onClick={() => navigate("/home")} />
         </Container>
       )}

@@ -2,7 +2,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import Error from "./pages/error";
-import Home from "./pages/home";
+import Home from "./pages/savings";
 import Transfer from './pages/transaction'
 import Savings from './pages/savings'
 import Investments from './pages/investments/get'

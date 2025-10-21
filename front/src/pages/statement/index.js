@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { Container } from "react-bootstrap";
 import { OrbitProgress } from "react-loading-indicators";
 import NavigationBar from "../../components/navigationbar";
@@ -8,27 +8,26 @@ import { Client } from "../../api/client";
 import { getDataUser } from "../../service/UserService";
 import { getPermissions } from "../../service/PermissionService";
 
-export default function ListClients() {
+export default function Statement() {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
   const dataUser = getDataUser();
   const permissions = getPermissions();
 
+  const location = useLocation();
+
+  const clientFromView = location.state?.clientGeneratingStatement?.id;
+  console.log("ID do cliente para extrato:", clientFromView);
+
   function fetchData() {
     setLoad(true);
     setTimeout(() => {
-      Client.get("/auth/listClients")
+      Client.get(`/auth/statement/${clientFromView}`)
         .then((res) => {
-          const clients = res.data.data;
-          console.log(JSON.stringify(clients));
-          const formattedData = clients.map((client) => ({
-            ...client,
-            accountNumber: client.account?.accountNumber || "",
-            agencyNumber: client.account?.agencyNumber || "",
-          }));
-          setData(formattedData);
-
+          const statement = res.data.data || [];
+          console.log("Extrato:", statement);
+          setData(statement);
         })
         .catch(function (error) {
           console.log(error);
@@ -65,14 +64,14 @@ export default function ListClients() {
       ) : (
         <Container className="mt-2">
           <DataTable
-            title="Clientes Cadastrados"
-            rows={["Nome", "CPF", "Email", "Número da Conta", "Número da Agência", "Id"]}
-            hide={[true, false, true, false, true]}
+            title="Extrato Bancário"
+            rows={["Valor", "Origem", "Data"]}
+            hide={[false, false, true]}
             data={data}
-            keys={["name", "cpf", "email", "accountNumber", "agencyNumber", "id"]}
-            resource="clients"
-            crud={["listClients"]}
-            showMoreInfo={true}
+            keys={["value", "origin", "created_at"]}
+            resource="statement"
+            crud={["listStatement"]}
+            showMoreInfo={false}
           />
         </Container>
       )}

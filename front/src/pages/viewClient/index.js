@@ -24,6 +24,9 @@ export default function ViewClient() {
   function createTransfer(clientMakingTransfer) {
     navigate("/transfer", { state: { clientMakingTransfer } });
   }
+  function generateStatement(clientGeneratingStatement) {
+    navigate("/statement", { state: { clientGeneratingStatement } });
+  }
 
   useEffect(() => {
     if (!dataUser) {
@@ -57,11 +60,14 @@ export default function ViewClient() {
     <>
       <NavigationBar />
       <Container className="mt-2">
-        {clientFromList?.id? (
+        {clientFromList?.id ? (
           <>
             <ClientBalanceFromList clientId={clientFromList.id} />
             <ClientDataFromList clientId={clientFromList.id} />
-            <Submit value="Gerar Extrato"></Submit>
+            <Submit
+              value="Gerar Extrato"
+              onClick={() => generateStatement(clientFromList)}
+            ></Submit>
             <Submit
               value="Realizar Transferência"
               onClick={() => createTransfer(clientFromList)}
@@ -74,7 +80,10 @@ export default function ViewClient() {
           <>
             <Balance />
             <Data />
-            <Submit value="Gerar Extrato"></Submit>
+            <Submit
+              value="Gerar Extrato"
+              onClick={() => generateStatement(clientFromList)}
+            ></Submit>
             <Submit
               value="Realizar Transferência oiiiii"
               onClick={() => createTransfer(clientFromList)}

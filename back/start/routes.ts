@@ -50,7 +50,7 @@ router
     router.get('/users/:id/address', '#controllers/auth_controller.getUserAddress')
     router.get('/viewAccount/:id?', '#controllers/clients_controller.viewAccount')
     router.post('/transaction', '#controllers/clients_controller.transaction')
-    // router.get('/statement', '#controllers/statement_controller.index')
+    router.get('/statement/:id?', '#controllers/statement_controller.index')
     // router.get('/statement', '#controllers/statement_controller.store')
     router.post('/logout', '#controllers/auth_controller.logout')
   })

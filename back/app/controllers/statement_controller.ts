@@ -1,29 +1,55 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import StatementPolicy from '#policies/statement_policy'
 import Statement from '#models/statement'
+import Account from '#models/account'
+import User from '#models/user'
 
 export default class StatementController {
-  async index({ auth, response, bouncer }: HttpContext) {
+  async index({ auth, response, bouncer, params, request }: HttpContext) {
     try {
-      const user = auth.getUserOrFail()
-
+      const loggedUser = await auth.getUserOrFail()
       if (await bouncer.with(StatementPolicy).denies('list')) {
-        return response.forbidden({ message: 'Você não tem permissão para listar extrato' })
+        return response.forbidden({ message: 'Sem permissão' })
       }
+      //se for o gerente 
+      if (loggedUser.id_role_fk === 1 && params.id) {
+        const client = await User.find(params.id)
 
-      const statement = await Statement.query().where('id_user_fk', user.id)
+        if (!client) {
+          return response.notFound({
+            message: 'Cliente não encontrado.',
+          })
+        }
 
-      return response.status(200).json({
-        message: 'OK',
-        data: statement.map((t) => ({
-          ...t.toJSON(),
-          created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
-        })),
-      })
+        await client.load('account')
+        const accountNumber = client.account.account_number
+
+        const statement = await Statement.query().where('account_number_fk', accountNumber)
+        return response.ok({
+          message: 'OK',
+          data: statement.map((t) => ({
+            ...t.toJSON(),
+            created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
+          })),
+        })
+      } else { //se for o cliente 
+        await loggedUser.load('account')
+        console.log("AAAAAAAAAA" + loggedUser.account.account_number)
+        const statement = await Statement.query().where(
+          'account_number_fk',
+          loggedUser.account.account_number
+        )
+        return response.ok({
+          message: 'OK',
+          data: statement.map((t) => ({
+            ...t.toJSON(),
+            created_at: t.createdAt?.toFormat('dd/MM/yyyy HH:mm'),
+          })),
+        })
+      }
     } catch (error) {
-      return response.status(500).json({
-        message: 'ERROR',
-      })
+      console.log(error)
+      return response.status(500).json({ message: 'ERROR' })
     }
   }
 
@@ -50,5 +76,4 @@ export default class StatementController {
   //     })
   //   }
   // }
-
 }

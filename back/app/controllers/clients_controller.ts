@@ -153,19 +153,10 @@ export default class ClientsController {
       // salva um registro na transaction
       await Transaction.create({
         value,
-        type: true, // recebeu
-        account_number_transfer: accountFrom.account_number,
-        account_number_fk: accountTo.account_number,
+        account_number_sender: accountFrom.account_number,
+        account_number_recipient: accountTo.account_number,
       })
-      await Transaction.create({
-        value,
-        type: false, // deu
-        account_number_transfer: accountFrom.account_number,
-        account_number_fk: accountTo.account_number,
-      })
-      //id	value	type (1 recebeu 2 deu)	account_number_transfer	account_number_fk	created_at
-
-
+    
       // salva um registro no statement
       await Statement.create({
         value,
